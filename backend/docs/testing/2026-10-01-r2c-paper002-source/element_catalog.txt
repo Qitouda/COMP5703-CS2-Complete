@@ -1,0 +1,14 @@
+- [p4] Table 1: Table 1: Results of GPT-3.5 and GPT-4 on reasoning benchmarks with the setting in Section 3.1.1.
+- [p4] Table 2: Table 2: Comparison of Self-Correct (Oracle) with a
+- [p5] Table 3: Table 3: Results of GPT-3.5 and GPT-4 on reasoning benchmarks withintrinsic self-correction.
+- [p5] Figure 1: Figure 1: Analysis of the changes in answers after two rounds of self-correction. No Change: The
+- [p6] Figure 2: Figure 2: Examples on GSM8K (Cobbe et al., 2021). Left: successful self-correction; Right: failed
+- [p7] Table 4: Table 4: Results of multi-agent debate and self-
+- [p7] Table 5: Table 5: Results of Constrained Generation.
+- [p14] Figure 3: Figure 3: Example on GSM8K where self-correction changes an incorrect answer to a correct one.
+- [p15] Figure 4: Figure 4: Example on GSM8K where self-correction changes a correct answer to an incorrect one.
+- [p16] Figure 5: Figure 5: Example on GSM8K where self-correction does not change the answer.
+- [p17] Figure 6: Figure 6: Example on CommonSenseQA where self-correction changes a correct answer to an in-
+- [p18] Figure 7: Figure 7: Example output for Constrained Generation using the pre-hoc prompt from Madaan et al.
+- [p18] Figure 8: Figure 8: Example output for Constrained Generation using a prompt casually written by the authors.
+- [p19] Table 6: Table 6: Results of GPT-3.5 on GSM8K with different feedback prompts.

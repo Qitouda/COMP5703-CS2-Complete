@@ -1,0 +1,37 @@
+# Credentials and machine-specific settings (at every component level).
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Installed dependencies and generated build/test files.
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+dist/
+build/
+htmlcov/
+.coverage
+*.tsbuildinfo
+*.log
+
+# Desktop/editor state and Office lock files.
+.DS_Store
+._*
+.idea/
+.vscode/
+~$*
+
+# The backend generates these locally; curated benchmark data stays in data/.
+/backend/data/
+/backend/uploads/
+/backend/outputs/
+/backend/artifacts/
+/backend/tmp/

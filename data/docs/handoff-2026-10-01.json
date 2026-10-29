@@ -1,0 +1,283 @@
+{
+  "handoff_tag": "r2c-sync-2026-10-01",
+  "branch": "chore/r2c-sync-2026-10-01",
+  "backend_commit": "1ae578b9ad12697838f6fbc039101fcef012f2cb",
+  "frontend_commit": "54cc58a6ca4c97bea9a915e1952843ab9995c891",
+  "project_documents": [
+    {
+      "path": "00_项目总览/00_先读_第二轮文档说明.md",
+      "sha256": "f792ca290437068954db469ada02126ddd7eef40fc6f108653bea5f7bc8eb657"
+    },
+    {
+      "path": "00_项目总览/MVP产品基线.md",
+      "sha256": "4b775754fae4c7c7d5be44ca8ee34b44fb315a1b29f5512ad03ca82022281882"
+    },
+    {
+      "path": "00_项目总览/第二轮_可信度核查开发计划.md",
+      "sha256": "59dfc6805e0b560942e53ce84f43e85172fb2db507f361d80b206d4dd3126b12"
+    },
+    {
+      "path": "01_统一规范/可信度核查报告字段合同_v0.1.md",
+      "sha256": "2eeafa5fc20f7a639ea553f389b3851e58e923be97399e8d5c7197b14fc8b72d"
+    },
+    {
+      "path": "01_统一规范/接口与需求协作说明.md",
+      "sha256": "c600348e14e00a6a669e2b544d17897dd2514c4aa13907ca48f703db2e0a3ecd"
+    },
+    {
+      "path": "01_统一规范/旧五维评分字段合同_v0.4.md",
+      "sha256": "48c7456bae0c9c44d1267fdc80551eaa7ec5d11b21e57746747cc1d45b58fe62"
+    },
+    {
+      "path": "02_各组任务/第二轮_产品组任务单.md",
+      "sha256": "2f1f8adeb0cc3c5b9e33a721ec64515c0afc2c2271ef20563d298b84ca42ddf8"
+    },
+    {
+      "path": "02_各组任务/第二轮_前端组任务单.md",
+      "sha256": "d1775a38cba1a0c4386430e39d7c7624b71620295ab207cf31529139c92b8377"
+    },
+    {
+      "path": "02_各组任务/第二轮_后端组任务单.md",
+      "sha256": "f4685d70bb5454f2ea5bb3ea755bb5a06285411d912ac6cd2603accb834e6be5"
+    },
+    {
+      "path": "02_各组任务/第二轮_团队总览.md",
+      "sha256": "555941c5590a304153ebee7cd96571b5b15d5a80822547be4e32cb2079fa6ccc"
+    },
+    {
+      "path": "02_各组任务/第二轮_数据处理组任务单.md",
+      "sha256": "43482f131faf0f46ee8a7b328dac5d862395eed475d19b2a3888440b951078b1"
+    },
+    {
+      "path": "03_过程与交付/会议记录/2026-08-17至08-23_项目周报.md",
+      "sha256": "947ea6e08423f68789078986f198c4491e73cf3454f1205d71fad9e150e4c6e0"
+    },
+    {
+      "path": "03_过程与交付/会议记录/2026-08-21_客户会议摘要.md",
+      "sha256": "d30d64ba661ef2a1a03efa4243b88c916c727fbbd99590d6a6f09ce6bc929eea"
+    },
+    {
+      "path": "03_过程与交付/会议记录/会议纪要模板.md",
+      "sha256": "eb94017d8c4716cdfb12b9bf0995ff5c8338a7e9ee0daab6559b9056b9ea66c2"
+    },
+    {
+      "path": "03_过程与交付/决策记录.md",
+      "sha256": "5404a357feb8de9489b405a1ceb55b08fac2312ad551a5dde3e97c91dcfdfe63"
+    },
+    {
+      "path": "03_过程与交付/接口、模型与联调记录/第二轮_可信度核查技术难点与提前验证.md",
+      "sha256": "c55bc64918734690e6ad2e8ebbe3afeee11130233820f16009fc84fb98fc6250"
+    },
+    {
+      "path": "03_过程与交付/数据样本与 Rubric/可信度核查_Rubric_v0.1.md",
+      "sha256": "ad9adb83950487f6453c557d85b6b1939d340edbeeeefc3968c35906aa3f2508"
+    },
+    {
+      "path": "03_过程与交付/数据样本与 Rubric/第二轮_可信度核查样本与复评记录.md",
+      "sha256": "1d2ce40485ef49d98bde984b14ea8668e32e34d22d28825c53bef99a1bed6d83"
+    },
+    {
+      "path": "03_过程与交付/第二轮_交付任务清单.md",
+      "sha256": "1a2cea4cbc7d6ed4d536ff93c397ad6694252e3eeb4974ca5be85268ea15febc"
+    },
+    {
+      "path": "03_过程与交付/课程作业/课程交付要求.md",
+      "sha256": "4dd3ca8cdedbbdae5cee0d7a113c9c4ba662482a5d02735d2635351a7f150fd2"
+    },
+    {
+      "path": "03_过程与交付/验收与演示材料/第二轮_整体验收路径.md",
+      "sha256": "c57473353dafe4ded20b0cc0dec5fa8964e596e6870ac97c706f80150d694972"
+    },
+    {
+      "path": "99_历史归档/2026-09-06_第一轮交付审计.md",
+      "sha256": "9422c1c0e2371266c8b273984f23a8278ab682a9054df7b8544c719eb2013c12"
+    },
+    {
+      "path": "99_历史归档/2026-09-10_通用解析计划_历史版.md",
+      "sha256": "dcb6d7004fa899d957c5e51a72897428afe8201dbab9bc63d0f798901342a450"
+    },
+    {
+      "path": "99_历史归档/2026-09-11_通用arXiv联调记录.md",
+      "sha256": "a1b59939775061e1326162ba4aac1b48880d52b7785c208a09459d90d50716f2"
+    },
+    {
+      "path": "99_历史归档/2026-09-14_更新前任务清单.txt",
+      "sha256": "7cc10de885765d7993d513dd6fea0862929027649b3be68abe285bb6d9b0e0d2"
+    },
+    {
+      "path": "99_历史归档/第一轮/第一轮_交付任务与历史Backlog.md",
+      "sha256": "fd4698042eaf9fd3db53b2bcf36e71f227cfecdc87eafe50b078edc4b7e81d2f"
+    },
+    {
+      "path": "99_历史归档/第一轮/第一轮_开发收尾.md",
+      "sha256": "6c7da22a1f87d21895fa6f55ec723a046603de97b740a6e2933af1f65ee664c5"
+    },
+    {
+      "path": "99_历史归档/第一轮/第一轮任务/第一轮_产品组任务单.md",
+      "sha256": "726583f572adb2f95c466a468c47f4b6501c68bff7dca302e83a7bc82d9cd8a1"
+    },
+    {
+      "path": "99_历史归档/第一轮/第一轮任务/第一轮_前端组任务单.md",
+      "sha256": "03f272d912c10256299f45748bca2fc5a5bf4e0c419a486163f7daed0c327b3b"
+    },
+    {
+      "path": "99_历史归档/第一轮/第一轮任务/第一轮_后端组任务单.md",
+      "sha256": "178fbd160ac67ac96a5c1d7f25f00446f8cd7859871c93af7dffb2310e000d9d"
+    },
+    {
+      "path": "99_历史归档/第一轮/第一轮任务/第一轮_团队总览.md",
+      "sha256": "43f94c70ac0d1277547f5de3cf11f9a3999514ec937717b80ad57b270f75e00b"
+    },
+    {
+      "path": "99_历史归档/第一轮/第一轮任务/第一轮_数据处理组任务单.md",
+      "sha256": "6abae3918dd9193337c7e76bf847839ad0ca44de231daefff800bd273f8f8474"
+    },
+    {
+      "path": "99_历史归档/第一轮_MVP产品基线_v0.2.md",
+      "sha256": "f5a0aed67223a0d7046a90eb29bc42a162330223c32afcb70f78ce8c19e6c755"
+    },
+    {
+      "path": "99_历史归档/第一轮审计探测记录.json",
+      "sha256": "6687769566c25d31cbe8b84407a1847f1ef755c597b78a9e1dd95dfda95be782"
+    },
+    {
+      "path": "99_历史归档/第一轮审计检查记录.txt",
+      "sha256": "82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+    },
+    {
+      "path": "99_历史归档/第二轮_原MVP优化开发计划_v0.1.md",
+      "sha256": "749537d19182286469b8e5deb8baa09f52ea5c7e24acd75d9e69429f5f1d8d69"
+    },
+    {
+      "path": "99_历史归档/第二轮_原交付任务清单_R2O.md",
+      "sha256": "0dbbe213c28e3ae4d31e2139159ac2156f2422d75b0a7144d0da686db7bbc76f"
+    },
+    {
+      "path": "99_历史归档/第二轮_原产品组任务单_R2O.md",
+      "sha256": "2e741f665026b8e88d2e51ff4f37e3e5c7ed1bd213ca1e138cb7115607e06a07"
+    },
+    {
+      "path": "99_历史归档/第二轮_原前端组任务单_R2O.md",
+      "sha256": "bba93f4003fdf525141f6bc42f2f3ea71becbbc97d99f1b0bfb423183cd228da"
+    },
+    {
+      "path": "99_历史归档/第二轮_原后端组任务单_R2O.md",
+      "sha256": "7cdfcfb188660c1e567401c300de0a3fae4771ce7c57dd1bb114afea89a0e895"
+    },
+    {
+      "path": "99_历史归档/第二轮_原团队总览_R2O.md",
+      "sha256": "62814f62c4d233518236c92c14d56101127b4cae0361a08a462d5082a299f258"
+    },
+    {
+      "path": "99_历史归档/第二轮_原数据处理组任务单_R2O.md",
+      "sha256": "ce3a764cb24b138fc09b1f210a8db62f5df626c8b417895152a6a745039f36a3"
+    },
+    {
+      "path": "99_历史归档/第二轮_原整体验收路径_R2O.md",
+      "sha256": "096be20d169710144745b8a01df642128df55857d75b7c4b880a59bb3e09e0ae"
+    },
+    {
+      "path": "99_历史归档/第二轮_原评估差异与优化验证记录_R2O.md",
+      "sha256": "937e7b78b5e994c53fcedf39d569534e8ce6b4d71f89d11f7ca1fdd39390718b"
+    },
+    {
+      "path": "99_历史归档/第二轮_参考来源说明.md",
+      "sha256": "6c0a8b1411a178d8bc1795f17f81d28618adb854e8f0cb3bc1bb85dd90a446ae"
+    },
+    {
+      "path": "99_历史归档/第二轮旧方案_R2O/CSPaper前端参考与验收规范.md",
+      "sha256": "c82af777115fa249e67074d06aaa448ce062c83d1111b12a76133283920cff95"
+    },
+    {
+      "path": "99_历史归档/第二轮旧方案_R2O/参考图/cspaper-agentic-review-progress.png",
+      "sha256": "e5fade0d2a0638ca9dbb4163677309bd247a7164cfe05e50caba07850e86511b"
+    },
+    {
+      "path": "99_历史归档/第二轮旧方案_R2O/参考图/cspaper-module-tabs-expanded.png",
+      "sha256": "67885d3acfc0a2085d4e33f1a9fdf050f721e743c84712fc067a12fa9b2708a2"
+    },
+    {
+      "path": "99_历史归档/第二轮旧方案_R2O/参考图/cspaper-paper-review-loading.png",
+      "sha256": "4b9d7531539880eee82813157fadf64e2b8c6fc7dd22428f1ed29de98a164ef1"
+    },
+    {
+      "path": "99_历史归档/第二轮旧方案_R2O/参考图/cspaper-reference-check-details.png",
+      "sha256": "479494b746ac416bd9d950432c28e8eef8515395ba18a40041cd117175b02d7c"
+    },
+    {
+      "path": "99_历史归档/第二轮旧方案_R2O/参考图/cspaper-tool-menu-expanded.png",
+      "sha256": "db546dbbb1b33bcf13014466e4cec1391d36a31ffc37affc2a058c36b46047e6"
+    },
+    {
+      "path": "99_历史归档/第二轮旧方案_R2O/第二轮_本地运行结果展示候选方案.md",
+      "sha256": "8bd380e08c97018d2b6c77a8c879844e2ce4ea0a171cf523ffd90a92c68bc03a"
+    },
+    {
+      "path": "99_历史归档/第二轮旧方案_R2O/第二轮_本轮范围与待确认事项.md",
+      "sha256": "79deec920bc80dd37ef70b63ad67bc16f51c2a210181534322903ce0f55b2e3b"
+    },
+    {
+      "path": "99_历史归档/第二轮旧方案_R2O/第二轮_第一轮成果与本轮衔接.md",
+      "sha256": "6a15e010af425c68b37e73b8836c94a3967a87725252ca42897f1b29ea196f26"
+    },
+    {
+      "path": "README_项目文档总览.md",
+      "sha256": "bc452a9a2ff333e63b6b3ac3e52345ae8fb87f828afa7114d5d7ec61439b136f"
+    }
+  ],
+  "excluded_project_files": [
+    ".DS_Store",
+    "01_统一规范/.DS_Store",
+    "03_过程与交付/.DS_Store",
+    "03_过程与交付/会议记录/2026-08-23_小组周报草稿.docx"
+  ],
+  "data_release": {
+    "dataset_version": "0.6.0-ai-final",
+    "schema_version": "0.5.0",
+    "paper_count": 50,
+    "policy_scope": "legacy_five_dimension_only"
+  },
+  "validation": {
+    "backend_tests": 140,
+    "frontend_tests": 22,
+    "data_errors": 0,
+    "source_checks_passed": 17
+  },
+  "new_credibility_agent_implemented": false,
+  "human_gold_complete": false,
+  "project_documents_scope": "Document hashes refer to docs/project at this Git commit; handoff_tag remains the immutable original release snapshot.",
+  "credibility_pilot_selection": {
+    "path": "data/credibility_cases/pilot_v0.1.selection.json",
+    "sha256": "52cf68ff7884e3e3357ce0cdcd00f1b10961f163ffd8eda405b47174e6706104",
+    "paper_count": 4,
+    "is_gold": false,
+    "status": "candidate_evidence_pack_pending_review"
+  },
+  "current_development_entry": "main",
+  "main_merge_records": {
+    "merged_at_date": "2026-10-01",
+    "data": {
+      "pull_request": 1,
+      "merge_commit": "5d596bd3649cd862985941dbddbe40bbe7ed8095"
+    },
+    "backend": {
+      "pull_request": 1,
+      "merge_commit": "fab63004b38026df15c82353bb4c1b3428c2830f",
+      "ci_status": "success"
+    },
+    "frontend": {
+      "pull_requests": [
+        2,
+        3
+      ],
+      "merge_commits": [
+        "82bc195184902b0e8498821175d6187e55caa43c",
+        "af529caeb11c0606de042eab7e9bdc72351f4428"
+      ],
+      "tests": 55,
+      "lint": "passed",
+      "build": "passed",
+      "credibility_implementation": "explicit_mock_prototype"
+    }
+  }
+}

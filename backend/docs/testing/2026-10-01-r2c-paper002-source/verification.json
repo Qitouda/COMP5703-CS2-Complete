@@ -1,0 +1,88 @@
+{
+  "run_id": "r2c-p002-source-20261001T055118Z",
+  "checked_at": "2026-10-01T05:51:18Z",
+  "case_id": "R2C-P002-C01",
+  "status": "passed",
+  "execution_scope": "production_generic_parser_pdf_entrypoint_only",
+  "parser_name": "generic-pypdf-v2",
+  "pypdf_version": "6.17.0",
+  "backend_commit": "8ff3e8eb81b4c95b7e3af4320e9405603531ea7f",
+  "parser_source_sha256": "f29aeab42b0fd2e695c581a30b176b59496f1922947883b1f601c2cec322e986",
+  "source_sha256": "f204bfe2e642ab52abbf3fa94141e644d22a23510d6d64ed8ddc0ee9823eb983",
+  "source_version_locked_by_sha256": "2310.01798v1",
+  "runtime_paper_id": "pdf_f204bfe2e642ab52",
+  "page_count": 19,
+  "text_block_count": 39,
+  "element_count": 14,
+  "parse_quality": "partial",
+  "warnings": [
+    "TABLE_STRUCTURE_UNVERIFIED"
+  ],
+  "claim_chunk_ids": [
+    "pdf_f204bfe2e642ab52_chunk_0001"
+  ],
+  "table_chunk_id": "pdf_f204bfe2e642ab52_chunk_0013",
+  "table_element_id": "pdf_f204bfe2e642ab52_table_3",
+  "table_page": 5,
+  "table_header_columns": [
+    "GSM8K",
+    "CommonSenseQA",
+    "HotpotQA"
+  ],
+  "model": "GPT-4",
+  "benchmark": "GSM8K",
+  "actual_rows": [
+    {
+      "method": "Standard Prompting",
+      "model_calls": 1,
+      "accuracy_percent": 95.5,
+      "raw_row": "Standard Prompting 1 95.5 82.0 49.0"
+    },
+    {
+      "method": "Self-Correct (round 1)",
+      "model_calls": 3,
+      "accuracy_percent": 91.5,
+      "raw_row": "Self-Correct (round 1) 3 91.5 79.5 49.0"
+    },
+    {
+      "method": "Self-Correct (round 2)",
+      "model_calls": 5,
+      "accuracy_percent": 89.0,
+      "raw_row": "Self-Correct (round 2) 5 89.0 80.0 43.0"
+    }
+  ],
+  "difference_percentage_points": -6.5,
+  "condition_chunk_ids": [
+    "pdf_f204bfe2e642ab52_chunk_0008",
+    "pdf_f204bfe2e642ab52_chunk_0013"
+  ],
+  "checks": {
+    "locked_pdf_sha256": true,
+    "page_count": true,
+    "complete_title": true,
+    "abstract_contains_claim": true,
+    "abstract_defines_no_external_feedback": true,
+    "claim_has_page_1_chunk": true,
+    "table_3_has_page_5_chunk": true,
+    "table_and_chunk_same_section": true,
+    "baseline_row": true,
+    "round_1_row": true,
+    "round_2_row": true,
+    "difference_percentage_points": true,
+    "reported_accuracy_metric": true,
+    "historical_model_and_sample_conditions": true,
+    "correct_label_stopping_removed": true,
+    "caption_locations": true,
+    "table_structure_limitation_retained": true
+  },
+  "api_runtime_executed": false,
+  "model_called": false,
+  "credibility_classification_executed": false,
+  "table_cell_structure_verified": false,
+  "artifacts": [
+    "verification.json",
+    "parsed_document.json",
+    "anchored_text.txt",
+    "element_catalog.txt"
+  ]
+}

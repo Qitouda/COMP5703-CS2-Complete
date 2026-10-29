@@ -1,0 +1,699 @@
+{
+  "paper": {
+    "paper_id": "pdf_f204bfe2e642ab52",
+    "title": "LARGE LANGUAGE MODELS CANNOT SELF-CORRECT REASONING YET",
+    "authors": [],
+    "abstract": "Large Language Models (LLMs) have emerged as a groundbreaking technology\nwith their unparalleled text generation capabilities across various applications.\nNevertheless, concerns persist regarding the accuracy and appropriateness of their\ngenerated content. A contemporary methodology, self-correction, has been pro-\nposed as a remedy to these issues. Building upon this premise, this paper critically\nexamines the role and efficacy of self-correction within LLMs, shedding light on\nits true potential and limitations. Central to our investigation is the notion of in-\ntrinsic self-correction, whereby an LLM attempts to correct its initial responses\nbased solely on its inherent capabilities, without the crutch of external feedback.\nIn the context of reasoning, our research indicates that LLMs struggle to self-\ncorrect their responses without external feedback, and at times, their performance\nmight even degrade post self-correction. Drawing from these insights, we offer\nsuggestions for future research and practical applications in this field.",
+    "language": "en",
+    "page_count": 19,
+    "arxiv_id": null,
+    "doi": null,
+    "sections": [
+      {
+        "section_id": "pdf_f204bfe2e642ab52_sec_000",
+        "title": "Front Matter",
+        "level": 1,
+        "page_start": 1,
+        "page_end": 1
+      },
+      {
+        "section_id": "pdf_f204bfe2e642ab52_sec_001",
+        "title": "Abstract",
+        "level": 1,
+        "page_start": 1,
+        "page_end": 1
+      },
+      {
+        "section_id": "pdf_f204bfe2e642ab52_sec_002",
+        "title": "Introduction",
+        "level": 1,
+        "page_start": 1,
+        "page_end": 2
+      },
+      {
+        "section_id": "pdf_f204bfe2e642ab52_sec_003",
+        "title": "Background And Related Work",
+        "level": 1,
+        "page_start": 2,
+        "page_end": 3
+      },
+      {
+        "section_id": "pdf_f204bfe2e642ab52_sec_004",
+        "title": "Can Large Language Models Self-Correct Reasoning ?",
+        "level": 1,
+        "page_start": 3,
+        "page_end": 3
+      },
+      {
+        "section_id": "pdf_f204bfe2e642ab52_sec_005",
+        "title": "Self-Correction With Oracle Feedback",
+        "level": 2,
+        "page_start": 3,
+        "page_end": 3
+      },
+      {
+        "section_id": "pdf_f204bfe2e642ab52_sec_006",
+        "title": "Experimental Setup",
+        "level": 3,
+        "page_start": 3,
+        "page_end": 4
+      },
+      {
+        "section_id": "pdf_f204bfe2e642ab52_sec_007",
+        "title": "Results",
+        "level": 3,
+        "page_start": 4,
+        "page_end": 4
+      },
+      {
+        "section_id": "pdf_f204bfe2e642ab52_sec_008",
+        "title": "Reflection",
+        "level": 3,
+        "page_start": 4,
+        "page_end": 4
+      },
+      {
+        "section_id": "pdf_f204bfe2e642ab52_sec_009",
+        "title": "Intrinsic Self-Correction",
+        "level": 2,
+        "page_start": 4,
+        "page_end": 5
+      },
+      {
+        "section_id": "pdf_f204bfe2e642ab52_sec_010",
+        "title": "Why Does The Performance Not Increase , But Instead Decrease ?",
+        "level": 3,
+        "page_start": 5,
+        "page_end": 6
+      },
+      {
+        "section_id": "pdf_f204bfe2e642ab52_sec_011",
+        "title": "Results Of Other Prompts And Related Studies",
+        "level": 3,
+        "page_start": 6,
+        "page_end": 6
+      },
+      {
+        "section_id": "pdf_f204bfe2e642ab52_sec_012",
+        "title": "Multi-Agent Debate And Self-Consistency",
+        "level": 2,
+        "page_start": 6,
+        "page_end": 7
+      },
+      {
+        "section_id": "pdf_f204bfe2e642ab52_sec_013",
+        "title": "Self-Correction As Post-Hoc Prompting",
+        "level": 1,
+        "page_start": 7,
+        "page_end": 8
+      },
+      {
+        "section_id": "pdf_f204bfe2e642ab52_sec_014",
+        "title": "Discussion",
+        "level": 1,
+        "page_start": 8,
+        "page_end": 9
+      },
+      {
+        "section_id": "pdf_f204bfe2e642ab52_sec_015",
+        "title": "Conclusion",
+        "level": 1,
+        "page_start": 9,
+        "page_end": 9
+      },
+      {
+        "section_id": "pdf_f204bfe2e642ab52_sec_016",
+        "title": "Limitations And Broader Impact",
+        "level": 1,
+        "page_start": 9,
+        "page_end": 10
+      },
+      {
+        "section_id": "pdf_f204bfe2e642ab52_sec_017",
+        "title": "References",
+        "level": 1,
+        "page_start": 10,
+        "page_end": 14
+      },
+      {
+        "section_id": "pdf_f204bfe2e642ab52_sec_018",
+        "title": "Prompts And Example Outputs",
+        "level": 1,
+        "page_start": 14,
+        "page_end": 19
+      },
+      {
+        "section_id": "pdf_f204bfe2e642ab52_sec_019",
+        "title": "Additional Results On Gsm8K",
+        "level": 1,
+        "page_start": 19,
+        "page_end": 19
+      }
+    ],
+    "parse_quality": "partial",
+    "parse_warnings": [
+      "TABLE_STRUCTURE_UNVERIFIED"
+    ]
+  },
+  "blocks": [
+    {
+      "text": "LARGE LANGUAGE MODELS CANNOT SELF -CORRECT\nREASONING YET\nJie Huang1,2,∗ Xinyun Chen1 Swaroop Mishra1 Huaixiu Steven Zheng1 Adams Wei Yu1\nXinying Song1 Denny Zhou1\n1Google DeepMind 2University of Illinois at Urbana-Champaign",
+      "page_start": 1,
+      "page_end": 1,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0000",
+      "section_id": "pdf_f204bfe2e642ab52_sec_000",
+      "section_title": "Front Matter",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "ABSTRACT\nLarge Language Models (LLMs) have emerged as a groundbreaking technology\nwith their unparalleled text generation capabilities across various applications.\nNevertheless, concerns persist regarding the accuracy and appropriateness of their\ngenerated content. A contemporary methodology, self-correction, has been pro-\nposed as a remedy to these issues. Building upon this premise, this paper critically\nexamines the role and efficacy of self-correction within LLMs, shedding light on\nits true potential and limitations. Central to our investigation is the notion of in-\ntrinsic self-correction, whereby an LLM attempts to correct its initial responses\nbased solely on its inherent capabilities, without the crutch of external feedback.\nIn the context of reasoning, our research indicates that LLMs struggle to self-\ncorrect their responses without external feedback, and at times, their performance\nmight even degrade post self-correction. Drawing from these insights, we offer\nsuggestions for future research and practical applications in this field.",
+      "page_start": 1,
+      "page_end": 1,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0001",
+      "section_id": "pdf_f204bfe2e642ab52_sec_001",
+      "section_title": "Abstract",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "1 I NTRODUCTION\nThe rapid advancements in the domain of artificial intelligence have ushered in the era of Large\nLanguage Models (LLMs). These models, characterized by their expansive parameter counts and\nunparalleled capabilities in text generation, have showcased promising results across a multitude\nof applications (OpenAI, 2023; Anil et al., 2023; Qin et al., 2023; Bubeck et al., 2023). However,\nconcerns about their accuracy, reasoning capabilities, and the safety of their generated content have\ndrawn significant attention from the community (Bang et al., 2023; Alkaissi & McFarlane, 2023;\nZheng et al., 2023; Shi et al., 2023; Carlini et al., 2021; Huang et al., 2022; Shao et al., 2023; Li\net al., 2023; Wei et al., 2023; Zhou et al., 2023b; Zou et al., 2023, inter alia).\nAmidst this backdrop, the concept of “self-correction” has emerged as a promising solution, where\nLLMs refine their responses based on feedback to their previous outputs (Madaan et al., 2023;\nWelleck et al., 2023; Shinn et al., 2023; Kim et al., 2023; Bai et al., 2022; Ganguli et al., 2023;\nGao et al., 2023; Paul et al., 2023; Chen et al., 2023b; Pan et al., 2023, inter alia). However, the\nunderlying mechanics and efficacy of self-correction in LLMs remain underexplored. A fundamen-\ntal question arises: If an LLM possesses the ability to self-correct, why doesn’t it simply offer the\ncorrect answer in its initial attempt? This paper delves deeply into this paradox, critically examining\nthe self-correction capabilities of LLMs, with a particular emphasis on reasoning (Wei et al., 2022;\nZhou et al., 2023b; Huang & Chang, 2023).\nTo study this, we first define the concept of intrinsic self-correction, a scenario wherein the model\nendeavors to rectify its initial responses based solely on its inherent capabilities, without the crutch\nof external feedback. Such a setting is crucial because high-quality external feedback is unavailable\nin many real-world applications. Moreover, it is vital to understand the intrinsic capabilities of\nLLMs. Contrary to the optimism surrounding self-correction (Madaan et al., 2023; Kim et al., 2023;\nShinn et al., 2023; Pan et al., 2023, inter alia), our findings indicate that LLMs struggle to amend\ntheir prior responses in this setting. In most instances, the performance post self-correction even\ndeteriorates. This observation is in contrast to prior research such as Kim et al. (2023); Shinn et al.\n(2023). Upon closer examination, we observe that the improvements in these studies result from\n∗Work done during internship at Google DeepMind. Correspondence to: Jie Huang\n<jeffhj@illinois.edu>, Denny Zhou<dennyzhou@google.com>.\n1\narXiv:2310.01798v1 [cs.CL] 3 Oct 2023",
+      "page_start": 1,
+      "page_end": 1,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0002",
+      "section_id": "pdf_f204bfe2e642ab52_sec_002",
+      "section_title": "Introduction",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "Large Language Models Cannot Self-Correct Reasoning Yet\nusing oracles to guide the self-correction process, and the improvements vanish when oracle labels\nare not available. Transitioning to another facet of self-correction, we investigate the potential of\nmulti-agent debate (Du et al., 2023; Liang et al., 2023) as a means to improve reasoning. In this\nmethod, multiple instances of an LLM critique each other’s responses. However, our results reveal\nthat its efficacy is no better than self-consistency (Wang et al., 2022) when considering an equivalent\nnumber of responses, highlighting the limitations of such an approach.\nOn the other hand, while self-correction has limitations in enhancing reasoning, it does show\npromising results in other tasks like altering the style or improving the appropriateness of responses\n(Madaan et al., 2023; Bai et al., 2022; Ganguli et al., 2023). Thus, understanding the nuances and\nidentifying the underlying reasons is vital. To delve deeper, we perceive self-correction as a form of\npost-hoc prompting, wherein the prompting involves the responses of LLMs. We assess scenarios\nwhere self-correction is genuinely beneficial—specifically when it provides instructions or feedback\nthat standard prompting misses. Moreover, our analysis reveals that the enhancement attributed to\nself-correction in certain tasks may stem from an ill-crafted initial instruction that is overshadowed\nby a carefully-crafted feedback prompt. In such cases, integrating the feedback into the initial in-\nstruction or crafting a better initial prompt might yield better results and lower the inference cost.\nIn light of our findings, we provide insights into the nuances of LLMs’ self-correction capabilities,\nurging the community to be skeptical of this idea and apply it with caution. Furthermore, we ini-\ntiate discussions and encourage future research to delve into methods that can genuinely correct\nreasoning, for instance, by incorporating external feedback.",
+      "page_start": 2,
+      "page_end": 2,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0003",
+      "section_id": "pdf_f204bfe2e642ab52_sec_002",
+      "section_title": "Introduction",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "2 B ACKGROUND AND RELATED WORK\nBroadly, the concept of self-correction can be traced back to the foundational principles of machine\nlearning and adaptive systems. Early work in neural networks was based on the iterative adjustment\nof model parameters in response to prediction errors (Rumelhart et al., 1986; LeCun et al., 1998)—a\nprocess that can be considered as rectifying errors using feedback from training data.\nThe advent of reinforcement learning introduced another dimension of self-correction. In this\nparadigm, agents optimize their strategies through interactions with their environment, perpetually\nmodifying their policies based on received rewards or penalties (Sutton & Barto, 2018). Expand-\ning upon this, a notable advancement for LLMs was the incorporation of Reinforcement Learning\nfrom Human Feedback (RLHF) (Ouyang et al., 2022). Rather than solely relying on environmen-\ntal feedback, RLHF incorporates human insights, addressing challenges in crafting precise reward\nfunctions and mitigating unintended behaviors. Nonetheless, this feedback often lacks immediacy\nas it traditionally integrates during training phases rather than in real-time. Furthermore, corrections\nmight not necessarily be reflected in specific queries during inference.\nWith LLMs’ evolution, the notion of inference-time self-correction gained prominence. The dis-\ncourse on self-correction now pivots around whether these advanced models can recognize the ap-\npropriateness or accuracy of their outputs and, if needed, provide refined answers (Bai et al., 2022;\nMadaan et al., 2023; Welleck et al., 2023, inter alia). For example, in the context of mathematical\nreasoning, an LLM might initially solve a complex problem but make an error in one of the calcu-\nlation steps. In an ideal self-correction scenario, the model is expected to recognize the potential\nmistake, revisit the problem, correct the error, and consequently produce a more accurate solution.\nYet, the definition of “self-correction” in this context varies across the literature, leading to ambigu-\nity. As the field evolves, various terms like “self-refine”, “self-critique”, “self-improve”, and others\nemerge, each with its own specific context. A pivotal distinction lies in the source of feedback (Pan\net al., 2023): Is it purely internal, originating solely from the LLM, or does it draw from external\ninputs? Internal feedback relies on the model’s inherent knowledge and parameters to reassess its\noutputs. In contrast, external feedback incorporates inputs from humans, other models (Wang et al.,\n2023; Paul et al., 2023, inter alia), or external tools and knowledge sources (Gou et al., 2023; Chen\net al., 2023b; Olausson et al., 2023; Gao et al., 2023, inter alia).\nGiven that high-quality external feedback is often unavailable—and acknowledging its evident ad-\nvantages—we channel our investigation towards whether LLMs possess the inherent capability to\nrectify their responses. Such an investigation is also essential for understanding the capabilities of\nLLMs. Consequently, we focus on self-correction without any external or human feedback. We\n2",
+      "page_start": 2,
+      "page_end": 2,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0004",
+      "section_id": "pdf_f204bfe2e642ab52_sec_003",
+      "section_title": "Background And Related Work",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "Large Language Models Cannot Self-Correct Reasoning Yet\nterm this setting intrinsic self-correction. For brevity, unless explicitly stated otherwise (e.g., self-\ncorrection with oracle feedback), all references to “self-correction” in the remainder of this paper\npertain to intrinsic self-correction.",
+      "page_start": 3,
+      "page_end": 3,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0005",
+      "section_id": "pdf_f204bfe2e642ab52_sec_003",
+      "section_title": "Background And Related Work",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "3 C AN LARGE LANGUAGE MODELS SELF -C ORRECT REASONING ?\nReasoning is foundational to human cognition; it is our mechanism for making sense of the world,\ndrawing inferences, making decisions, and solving problems. For LLMs to be truly effective and\nreliable tools, especially in critical applications such as decision-making, education, or healthcare,\nthey must exhibit robust reasoning capabilities (Huang & Chang, 2023).\nWith this in mind, we center our investigation on a pivotal query: Can large language models\nself-correct their reasoning? To address this, we delve into existing research, carry out rigorous\nexperiments, and present comprehensive analyses.",
+      "page_start": 3,
+      "page_end": 3,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0006",
+      "section_id": "pdf_f204bfe2e642ab52_sec_004",
+      "section_title": "Can Large Language Models Self-Correct Reasoning ?",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "3.1 S ELF -CORRECTION WITH ORACLE FEEDBACK\nIn this section, we attempt to employ existing self-correction methods, adopting their setting (using\nlabels to guide the self-correction process), to examine their effectiveness in enhancing the perfor-\nmance of LLMs on reasoning tasks.",
+      "page_start": 3,
+      "page_end": 3,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0007",
+      "section_id": "pdf_f204bfe2e642ab52_sec_005",
+      "section_title": "Self-Correction With Oracle Feedback",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "3.1.1 E XPERIMENTAL SETUP\nBenchmarks. We focus on diverse datasets that have shown significant improvements through self-\ncorrection in the existing literature, including\n• GSM8K (Cobbe et al., 2021): GSM8K comprises a test set of 1,319 linguistically diverse grade\nschool math word problems, curated by human problem writers. There is a notable improvement\nof approximately 7% as evidenced by Kim et al. (2023) post self-correction.\n• CommonSenseQA (Talmor et al., 2019): This dataset offers a collection of multi-choice questions\nthat test commonsense reasoning. An impressive increase of around 15% is showcased through\nthe self-correction process, as demonstrated by Kim et al. (2023). Following Kojima et al. (2022);\nKim et al. (2023), we utilize the dev set for our evaluation, which encompasses 1,221 questions.\n• HotpotQA (Yang et al., 2018): HotpotQA is an open-domain multi-hop question answering\ndataset. Shinn et al. (2023) demonstrate significant performance improvement through self-\ncorrection. We test models’ performance in a closed-book setting and evaluate them using the\nsame set as Shinn et al. (2023). This set contains 100 questions, with exact match serving as the\nevaluation metric.\nPrompts. Following Kim et al. (2023); Shinn et al. (2023), we apply a three-step prompting strategy\nfor self-correction: 1) prompt the model to perform an initial generation (which also serves as the\nresults for Standard Prompting); 2) prompt the model to review its previous generation and produce\nfeedback; 3) prompt the model to answer the original question again with the feedback.\nFor our experiments, we mostly adhere to the prompts from the source papers. For GSM8K and\nCommonSenseQA, we integrate format instructions into the prompts of Kim et al. (2023) to facilitate\na more precise automatic evaluation (detailed prompts can be found in Appendix A). For HotpotQA,\nwe use the same prompt as Shinn et al. (2023).\nTest Models. Our primary testing is conducted on GPT-3.5-Turbo, the model examined in Kim et al.\n(2023); Shinn et al. (2023). Our goal is to reproduce the experiments described in the original papers.\nHowever, the papers do not specify which version was used1. We opt forgpt-3.5-turbo-0613,\nas we observed that the 0301 version almost always believes its initial response is correct, particu-\nlarly with the prompt in Kim et al. (2023). We also conduct tests on GPT-4, accessed on 2023/08/29,\naiming to test the self-correction capabilities of the latest and most powerful iteration of OpenAI’s\nmodel. For GPT-3.5, we employ the full evaluation set mentioned earlier. For GPT-4, to reduce the\ncost, we randomly sampled 200 questions for each dataset (100 for HotpotQA) for testing.\n1The official implementation uses the continuously updatedgpt-3.5-turbo kernel from OpenAI.\n3",
+      "page_start": 3,
+      "page_end": 3,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0008",
+      "section_id": "pdf_f204bfe2e642ab52_sec_006",
+      "section_title": "Experimental Setup",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "Large Language Models Cannot Self-Correct Reasoning Yet\nTable 1: Results of GPT-3.5 and GPT-4 on reasoning benchmarks with the setting in Section 3.1.1.\nGSM8K CommonSenseQA HotpotQA\nGPT-3.5 Standard Prompting 75.9 75.8 26.0\nSelf-Correct (Oracle) 84.3 89.7 29.0\nGPT-4 Standard Prompting 95.5 82.0 49.0\nSelf-Correct (Oracle) 97.5 85.5 59.0\nOther Setup. We prompt the models to undergo a maximum of two rounds of self-correction, using\nthe default temperature (1.). Following Kim et al. (2023); Shinn et al. (2023); Welleck et al. (2023),\nwe use the correct label to determine when to stop the self-correction loop.",
+      "page_start": 4,
+      "page_end": 4,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0009",
+      "section_id": "pdf_f204bfe2e642ab52_sec_006",
+      "section_title": "Experimental Setup",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "3.1.2 R ESULTS\nTable 1 summarizes the results. From these results, we observe significant performance improve-\nments, consistent with the findings presented in Kim et al. (2023); Shinn et al. (2023).",
+      "page_start": 4,
+      "page_end": 4,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0010",
+      "section_id": "pdf_f204bfe2e642ab52_sec_007",
+      "section_title": "Results",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "3.1.3 R EFLECTION\nTable 2: Comparison of Self-Correct (Oracle) with a\nRandom Baseline.\nCommonSenseQA\nGPT-3.5 GPT-4\nStandard Prompting 75.8 82.0\nSelf-Correct (Oracle, round 2) 89.7 85.5\nRandom (Oracle, round 2) 87.9 91.0\nRandom (Oracle, round 4) 100 100\nWhile we do not leverage any external\nsources or tools in our experiments, we\nfollow previous works in using the correct\nlabel to determine when to stop the self-\ncorrection loop. In a realistic setting, es-\npecially when aiming to employ LLMs to\nsolve math problems, the correct answer\nis unknown to us. As a result, the perfor-\nmance improvement requires a more care-\nful consideration.\nTo substantiate this perspective, we design a baseline predicated on random guessing. In this base-\nline, we continue to employ the correct label to determine when to stop; however, the corrective\naction is not undertaken by LLMs but is derived from random guessing from the remaining op-\ntions. CommonSenseQA, being a multiple-choice question dataset, presents five option candidates\nfor each question. If the accuracy of generation in roundk (where the initial generation is round 0) is\ndenoted as x, the expected accuracy for the subsequent generation becomesx + (1− x)/(5− k). Ta-\nble 2 tabulates the results of this random baseline. After 2 rounds, its performance is on par with or\neven better than self-correction, and after 4 rounds, it achieves a 100% accuracy. Yet, it is manifestly\nclear that such a random baseline cannot be regarded as an efficacious correction methodology.2\nNevertheless, results achieved with the use of labels might still function as an oracle, indicating the\npresence of a perfect verifier that can adjudicate the correctness of an answer. In tasks such as code\ngeneration, this is feasible since we can utilize an executor and unit tests to ascertain if the generated\ncode operates successfully (Chen et al., 2023b). However, for reasoning tasks, like solving mathe-\nmatical problems, this setting seems counter-intuitive. If we are already in possession of the ground\ntruth, there seems to be little reason to deploy LLMs for problem-solving. This setting can, how-\never, find relevance in scenarios where the goal is to understand the reasoning process—situations\nwhere the answer might be known, but there is a desire to decipher the detailed reasoning or explore\ndivergent solutions.",
+      "page_start": 4,
+      "page_end": 4,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0011",
+      "section_id": "pdf_f204bfe2e642ab52_sec_008",
+      "section_title": "Reflection",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "3.2 I NTRINSIC SELF -C ORRECTION\nPer the discussions in Section 3.1.3, since the idea that LLMs can self-correct their reasoning is\nnot supported by the evidence so far, we turn our focus to the results in the intrinsic self-correction\n2For GSM8K, a similar random baseline might not exist, but the underlying rationale remains the same.\nAdditionally, we can design a baseline, for example, by generating a random number each time. After a\nsignificant number of rounds, it may reach the correct answer, but such a kind of improvement is apparently\nnot meaningful. A more direct justification is: If we already know the answer, why do we need to do this?\n4",
+      "page_start": 4,
+      "page_end": 4,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0012",
+      "section_id": "pdf_f204bfe2e642ab52_sec_009",
+      "section_title": "Intrinsic Self-Correction",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "Large Language Models Cannot Self-Correct Reasoning Yet\nTable 3: Results of GPT-3.5 and GPT-4 on reasoning benchmarks withintrinsic self-correction.\n# calls GSM8K CommonSenseQA HotpotQA\nGPT-3.5\nStandard Prompting 1 75.9 75.8 26.0\nSelf-Correct (round 1) 3 75.1 38.1 25.0\nSelf-Correct (round 2) 5 74.7 41.8 25.0\nGPT-4\nStandard Prompting 1 95.5 82.0 49.0\nSelf-Correct (round 1) 3 91.5 79.5 49.0\nSelf-Correct (round 2) 5 89.0 80.0 43.0\nMay refer to Table 6 of Appendix B for results with different feedback prompts for GSM8K.\nThe results are consistent, and the variance is low across different feedback prompts.\nGSM8K\nNo Change\n74.7%\nIncorrect Incorrect\n8.9%\nIncorrect Correct\n7.6%\nCorrect Incorrect\n8.8%\nCommonSenseQA\nNo Change\n42.8%\nIncorrect Incorrect\n11.6%\nIncorrect Correct\n5.8%\nCorrect Incorrect\n39.8%\nFigure 1: Analysis of the changes in answers after two rounds of self-correction. No Change: The\nanswer remains unchanged; Correct⇒ Incorrect: A correct answer is changed to an incorrect one;\nIncorrect⇒ Correct: An incorrect answer is revised to a correct one; Incorrect⇒ Incorrect: An\nincorrect answer is altered but remains incorrect.\nsetting as defined in Section 2. To achieve this, we simply remove the use of labels to determine\nwhen to stop and evaluate the performance with two rounds of self-correction.\nTable 3 reports the accuracies and the number of model calls. We observe that, after self-correction,\nthe model’s performance drops on all benchmarks.",
+      "page_start": 5,
+      "page_end": 5,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0013",
+      "section_id": "pdf_f204bfe2e642ab52_sec_009",
+      "section_title": "Intrinsic Self-Correction",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "3.2.1 W HY DOES THE PERFORMANCE NOT INCREASE , BUT INSTEAD DECREASE ?\nEmpirical Analysis. Figure 1 summarizes the results of changes in answers after two rounds of\nself-correction using GPT-3.5, with two examples illustrated in Figure 2. For GSM8K, 74.7% of\nthe time, the model retains its initial answer. Among the remaining instances, the model is more\nlikely to modify a correct answer to an incorrect one than to revise an incorrect answer to a correct\none. For CommonSenseQA, there is a higher chance that GPT-3.5 alters its answer. The primary\nreason for this is that false answer options in CommonSenseQA often appear somewhat relevant to\nthe question, and using the self-correction prompt might bias the model to choose another option,\nleading to a high “correct⇒ incorrect” ratio.3\nLet’s take another look at the results presented in Table 1. These results use ground-truth labels to\nprevent the model from altering a correct answer to an incorrect one. However, determining how to\nprevent such mischanges is, in fact, the key to ensuring the success of self-correction.\nIntuitive Explanation. If the model is well-aligned and paired with a thoughtfully designed initial\nprompt, the initial response should already be optimal given the conditions of the prompt and the\n3We omit the analysis on HotpotQA because the sample size used in the source paper is quite small, which\nmay not produce meaningful statistics.\n5",
+      "page_start": 5,
+      "page_end": 5,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0014",
+      "section_id": "pdf_f204bfe2e642ab52_sec_010",
+      "section_title": "Why Does The Performance Not Increase , But Instead Decrease ?",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "Large Language Models Cannot Self-Correct Reasoning Yet\nTerry eats 2 yogurts a day. They are currently on sale at \n4 yogurts for $5.00. How much does he spend on \nyogurt over 30 days?\n... So, Terry spends $\\boxed{75.00}$ on yogurt over 30 \ndays. (Correct)\nReview your previous answer and find problems with \nyour answer.\nUpon reviewing my previous answer, I realized that I \nmade a mistake in calculating Terry's spending on \nyogurt over 30 days. I incorrectly stated that Terry \nspends $2.50 per day for 30 days, resulting in a total of \n$75.00…\nBased on the problems you found, improve your \nanswer .\n... Therefore, the final answer is Terry spends \n$\\boxed{37.50}$ on yogurt over 30 days. (Incorrect)\nChristina is planning a birthday party and needs .75 gift \nbags per invited guest, because 1/4 of attendees don't \nshow up. She invited 16 friends. Gift bags are $2 each. \nHow much will she spend?\n... Therefore, Christina will spend $18 on gift bags. \nAnswer: \\boxed{18}. (Incorrect)\nReview your previous answer and find problems with \nyour answer.\nUpon reviewing my previous answer, I recognize a \nmistake. I incorrectly stated that Christina needs 0.75 \ngift bags per invited guest. The given information states \nthat 1/4 of the attendees won't show up…\nBased on the problems you found, improve your \nanswer .\n... Therefore, Christina will spend $24 on gift bags. \nAnswer: \\boxed{24}. (Correct)\nFigure 2: Examples on GSM8K (Cobbe et al., 2021). Left: successful self-correction; Right: failed\nself-correction. Full prompts and responses can be viewed in Figures 3 and 4 of Appendix A.\nspecific decoding algorithm. Introducing feedback can be viewed as adding an additional prompt,\npotentially skewing the model towards generating a response that is tailored to this combined input.\nIn an intrinsic self-correction setting, on the reasoning tasks, this supplementary prompt may not\noffer any extra advantage for answering the question. In fact, it might even bias the model away\nfrom producing an optimal response to the initial prompt, resulting in a decrease in performance.",
+      "page_start": 6,
+      "page_end": 6,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0015",
+      "section_id": "pdf_f204bfe2e642ab52_sec_010",
+      "section_title": "Why Does The Performance Not Increase , But Instead Decrease ?",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "3.2.2 R ESULTS OF OTHER PROMPTS AND RELATED STUDIES\nOne might wonder, is the self-correction prompt we tested suboptimal? Could other prompts lead\nto an improvement in performance? The answer is: it is entirely plausible that we could identify a\nprompt that enhances model performance on specific benchmarks. However, this no longer aligns\nwith the intrinsic self-correction setting discussed in this paper, similar to the discussion of true\nfew-shot setting (Perez et al., 2021). Such a search essentially leverages feedback from humans or\ntraining examples. Furthermore, the same strategy can also be effectively applied to optimize the\ninitial prompts (Zhou et al., 2022; Yang et al., 2023), possibly achieving better performance without\nnecessitating additional model calls for self-correction. 4 In Appendix B, we test different prompts\nbut find that the performance still does not improve.\nMoreover, we are not the first to observe that self-correction does not necessarily improve reasoning\nof LLMs. For instance, Madaan et al. (2023) demonstrate the promising potential of self-correction\nacross various tasks, yet mathematical reasoning shows negligible improvement. Other studies, such\nas those by Gou et al. (2023) and Zhou et al. (2023a), which incorporate external feedback or tools,\nfind that self-correction without such feedback is a relatively weak baseline.\nTo conclude, our focus is not on addressing a question like, “Is there a self-correction prompt that\ncan bolster performance on specific benchmarks?” Such a query may not be particularly meaningful.\nInstead, we are aiming to tackle a more foundational issue: “Are large language models really able\nto self-correct their reasoning based solely on their inherent capabilities?”",
+      "page_start": 6,
+      "page_end": 6,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0016",
+      "section_id": "pdf_f204bfe2e642ab52_sec_011",
+      "section_title": "Results Of Other Prompts And Related Studies",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "3.3 M ULTI-AGENT DEBATE AND SELF -C ONSISTENCY\nIn examining the literature, we find that another potential approach for LLMs to self-correct their\nanswers involves allowing the models to critique and debate through multiple model calls (Du et al.,\n4We delve deeper into this topic in Section 4.\n6",
+      "page_start": 6,
+      "page_end": 6,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0017",
+      "section_id": "pdf_f204bfe2e642ab52_sec_012",
+      "section_title": "Multi-Agent Debate And Self-Consistency",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "Large Language Models Cannot Self-Correct Reasoning Yet\n2023; Liang et al., 2023; Chen et al., 2023a). Du et al. (2023) implement a multi-agent debate\nmethod by leveraging multiple instances of a single ChatGPT model and demonstrate significant\nimprovements on reasoning tasks. We adopt their method to test performance on GSM8K. For an\nunbiased implementation, we use the exact same prompt as Du et al. (2023) and replicate their ex-\nperiment with thegpt-3.5-turbo-0301 model, incorporating 3 agents and 2 rounds of debate.\nThe only distinction is that, to reduce result variance, we test on the complete test set of GSM8K,\ncompared to their usage of 100 examples. For reference, we also report the results of self-consistency\n(Wang et al., 2022), which prompts models to generate multiple responses and performs majority\nvoting to select the final answer.\nTable 4: Results of multi-agent debate and self-\nconsistency.\n# responses GSM8K\nStandard Prompting 1 76.7\nSelf-Consistency 3 82.5\nMulti-Agent Debate (round 1) 6 83.2\nSelf-Consistency 6 85.3\nMulti-Agent Debate (round 2) 9 83.0\nSelf-Consistency 9 88.2\nTable 4 presents the results 5. The\nresults indicate that both multi-agent\ndebate and self-consistency achieve\nsignificant improvements over stan-\ndard prompting. However, when\ncomparing multi-agent debate to self-\nconsistency, we observe that the per-\nformance of multi-agent is only slightly\nbetter than that of self-consistency with\nthe same number of agents (3 re-\nsponses, the baseline also compared in\nDu et al. (2023)). Furthermore, for self-\nconsistency with an equivalent number of responses, multi-agent debate significantly underperforms\nsimple self-consistency using majority voting.\nIn fact, rather than labeling the multi-agent debate as a form of “debate” or “critique”, it is more\nappropriate to perceive it as a means to achieve “consistency” across multiple model generations.\nFundamentally, its concept mirrors that of self-consistency; the distinction lies in the voting mech-\nanism, whether voting is model-driven or purely based on counts. The observed improvement is\nevidently not attributed to “self-correction”, but rather to “self-consistency”. If we aim to argue that\nLLMs can self-correct, it is preferable to exclude the effects of selection among multiple generations.",
+      "page_start": 7,
+      "page_end": 7,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0018",
+      "section_id": "pdf_f204bfe2e642ab52_sec_012",
+      "section_title": "Multi-Agent Debate And Self-Consistency",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "4 S ELF -C ORRECTION AS POST-HOC PROMPTING\nTable 5: Results of Constrained Generation.\n# calls CommonGen-Hard\nStandard Prompting* 1 44.0*\nSelf-Correct* 7 67.0*\nStandard Prompting* 1 53.0\nSelf-Correct* 7 61.1\nStandard Prompting (ours) 1 81.8\nSelf-Correct* 7 75.1\n* Prompts and results from Madaan et al. (2023).\nIn the preceding section, we observed\nthat LLMs face challenges in self-\ncorrecting their reasoning. Yet, there are\ncases where self-correction has yielded\nimpressive results, as evidenced by stud-\nies presented in Madaan et al. (2023);\nBai et al. (2022); Ganguli et al. (2023).\nTherefore, it is crucial to discern the\ndifferences and pinpoint the underlying\ncauses.\nTo unravel this, it is important to grasp\nthe fundamental nature of self-correction. Based on its form, self-correction can be viewed as a type\nof post-hoc prompting. The difference between it and standard prompting (which we term pre-hoc\nprompting here) is that the prompting is conducted on top of the responses of LLMs. And we refer\nto the process of improving such prompts as post-hoc prompt engineering.\nTherefore, scenarios in which self-correction enhances model responses occur when it can provide\nvaluable instruction or feedback that pre-hoc prompting cannot. For instance, when the goal is to\nmake the response safer, it might be challenging to instruct a model to generate completely risk-free\nresponses in its first attempt using only pre-hoc prompting. In such situations, self-correction can\nserve as a means to enhance the safety of responses through a fine-grained post-hoc examination\n(Bai et al., 2022; Ganguli et al., 2023). However, for reasoning tasks, this may not be the case. A\n5We denote the initial round as round 0, whereas Du et al. (2023) refers to it as round 1. The standard\ndeviation for Standard Prompting over 9 runs is 0.91.\n7",
+      "page_start": 7,
+      "page_end": 7,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0019",
+      "section_id": "pdf_f204bfe2e642ab52_sec_013",
+      "section_title": "Self-Correction As Post-Hoc Prompting",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "Large Language Models Cannot Self-Correct Reasoning Yet\nfeedback prompt such as “Review your previous answer and find problems with your answer.” does\nnot necessarily provide tangible benefits for reasoning.\nFurthermore, even when a significant performance improvement post self-correction is observed,\ncareful consideration of prompt design is essential. For example, if an response needs to meet\ncriteria that can be easily specified in the initial instruction (e.g., the output should contain certain\nwords, the generated code need to be highly efficient, the sentiment should be strongly negative),\ninstead of feeding these requirements as feedback in the post-hoc prompt, a more cost-effective\nalternative strategy is to embed these requirements directly (and explicitly) into the pre-hoc prompt.\nTaking the Constrained Generation (Generative Commonsense Reasoning) task in Madaan\net al. (2023) as an example, where the task involves generating coherent sentences us-\ning 20-30 input concepts: instead of asking the model to identify missing concepts\nand then guiding it to incorporate these concepts through feedback, we can simply in-\nstruct the model to include all the concepts from the outset—a requirement is not explic-\nitly embedded in the pre-hoc prompt of Madaan et al. (2023) (refer to Figure 7 for the\nprompt). Based on this insight, we create a straightforward baseline by designing the\nprompt as, e.g., “ Concept: ['vest', ... , 'serve', 'winter']\\n\\nWrite a\nreasonable paragraph that includes *ALL* of the above concepts.”6\nFollowing Madaan et al. (2023), we use concept coverage as the metric. Since the exact version\nof the model used in Madaan et al. (2023) is not detailed, we reference their results and attempt to\nreplicate their experiments using gpt-3.5-turbo-0613. We also experiment with their self-\ncorrection approach to refine the outputs produced with our designed prompt. The results in Table 5\nindicate the prompt (causally) crafted by us, “ Standard Prompting (ours)”, outperforms the post-\nself-correction results of Madaan et al. (2023). Additionally, when we employ their prompt to refine\nour outputs, performance even diminishes.7\nAgain, our intention here is not to debate whether a post-hoc prompt exists that can outperform\nthe prompt we wrote casually. Our main objective is to encourage a more critical examination of\nself-correction experiments. It is meaningless to employ a well-crafted post-hoc prompt to guide the\nmodel in “self-correcting” a response generated through a poorly constructed pre-hoc prompt. For\na fair comparison, equal effort should be invested in both pre-hoc and post-hoc prompting.\nConsidering the substantial token costs associated with self-correction, researchers and developers\nshould deliberate on its real benefits compared to what can be achieved with a pre-hoc prompt.",
+      "page_start": 8,
+      "page_end": 8,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0020",
+      "section_id": "pdf_f204bfe2e642ab52_sec_013",
+      "section_title": "Self-Correction As Post-Hoc Prompting",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "5 D ISCUSSION\nSelf-correction may still be beneficial for aligning responses with certain preferences. First, it\nis important to reiterate that we are not claiming self-correction is useless. Self-correction can be\neffectively employed to make responses align with specific preferences, such as altering the style\nof responses or enhancing their safety (Bai et al., 2022; Ganguli et al., 2023; Madaan et al., 2023).\nHowever, self-correction might not be effective when attempting to correct responses for tasks in\nwhich LLMs find it challenging to identify errors in their initial responses or assess the correctness\nof those responses. For instance, in the reasoning tasks studied in this paper, we did not observe any\nimprovement through self-correction.\nLeveraging external feedback for correction. In this paper, we focus on the intrinsic self-\ncorrection setting. However, when we leverage external feedback for correction, the narrative\nchanges. For instance, in the study by Gou et al. (2023), it is demonstrated that LLMs, when\ninteracting with various external tools such as search engines and calculators, can more effectively\nverify and correct their responses. Chen et al. (2023b); Olausson et al. (2023); Pan et al. (2023)\nshow that by using an executor and unit tests to ascertain the successful operation of generated code,\nLLMs can improve their generation and better solve reasoning tasks. Cobbe et al. (2021); Lightman\net al. (2023); Wang et al. (2023) train a verifier or a critique model on a high-quality dataset to verify\n6The prompt was casually written by the author without any optimization, symbolizing a “true zero-shot\nsetting” (Perez et al., 2021).\n7Besides, numerous outputs fail (e.g., formatting issues) when applying Madaan et al. (2023)’s prompt,\nnecessitating many regenerations—another potential drawback of self-correction.\n8",
+      "page_start": 8,
+      "page_end": 8,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0021",
+      "section_id": "pdf_f204bfe2e642ab52_sec_014",
+      "section_title": "Discussion",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "Large Language Models Cannot Self-Correct Reasoning Yet\nor refine LLMs’ outputs. Indeed, in everyday usage scenarios, when interacting with LLMs, we\noften provide feedback, guiding them to produce the content we desire. Utilizing this type of feed-\nback, though not perpetually accessible, to assist LLMs in correcting their responses is intuitively\nbeneficial, particularly when the feedback is of high quality.\nEmploying self-consistency as a method of self-verification. From the results in Table 1, we\nobserve that the oracle setting yields much higher accuracy. This suggests that within the LLM’s\nsearch space, a correct answer might exist. If we could leverage a robust verification process to\nguide the LLMs towards the right direction or steer them away from incorrect paths, outcomes could\nbe enhanced. One approach to achieve this is through external feedback, as previously discussed.\nAnother method is by leveraging self-consistency (Wang et al., 2022; Kadavath et al., 2022), as\nexplored in Section 3.3. An example of this approach is Tree of Thought (Yao et al., 2023), wherein\nreasoning of LLMs is enhanced through step-wise verification paired with self-consistency.\nPre-hoc vs post-hoc prompting.As discussed in Section 4, the latency and cost of post-hoc prompt-\ning are higher than those of pre-hoc prompting. Therefore, if the “feedback” can be encoded in the\ninitial instruction, pre-hoc prompting is the more advantageous choice. Moreover, it is preferable to\nplace greater emphasis on pre-hoc prompt engineering than on post-hoc prompt engineering. How-\never, in cases where we wish to leverage external feedback that must be given in conjunction with\nresponses, post-hoc prompting becomes a more suitable option.\nGuidelines for comparison. Lastly, we would like to offer some guidelines for comparison regard-\ning self-correction. First, when comparing self-correction methods to other baselines, it is important\nto report the inference cost, e.g., number of calls or tokens. Additionally, it is advisable to include\nself-consistency with the same number of calls/responses as a baseline. Second, avoid using an\nill-designed pre-hoc prompt while crafting a carefully designed post-hoc prompt for improvement.\nThird, when the methods leverage external feedback, it is essential to consider whether the feedback\nis reasonable. Calling external tools automatically or receiving feedback from the environment can\nbe considered reasonable; however, using ground-truth labels to judge whether a response is correct\ncan only be regarded as an oracle.",
+      "page_start": 9,
+      "page_end": 9,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0022",
+      "section_id": "pdf_f204bfe2e642ab52_sec_014",
+      "section_title": "Discussion",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "6 C ONCLUSION\nOur research shows that LLMs are not yet capable of self-correcting their reasoning. This implies\nthat expecting these models to inherently recognize and rectify their inaccuracies might be overly\noptimistic, at least with the current state of technology. More broadly, this underscores the need for\nongoing improvement and a multi-faceted approach when deploying LLMs in real-world applica-\ntions. In light of these findings, it is imperative for researchers and practitioners to approach the\nconcept of self-correction with a discerning perspective, acknowledging its potential and recogniz-\ning its boundaries. By doing so, we can better equip this technique to address the limitations of\nLLMs, steering their evolution towards enhanced accuracy and reliability.",
+      "page_start": 9,
+      "page_end": 9,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0023",
+      "section_id": "pdf_f204bfe2e642ab52_sec_015",
+      "section_title": "Conclusion",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "7 L IMITATIONS AND BROADER IMPACT\nAlthough our exploration spans a variety of self-correction strategies, prompts, and tasks, as we\nmentioned earlier, it is plausible that there exist specific prompts or strategies that could enhance\nthe reasoning performance of models for particular benchmarks. However, searching such prompts\nor strategies may inadvertently rely on external feedback, either from human insights or training\ndata. Additionally, such search efforts can be equally applied to the pre-hoc prompts (Zhou et al.,\n2022; Yang et al., 2023). A potential outcome of our study might be that it discourages research\ninto self-correction for certain applications. Nonetheless, we are optimistic that our findings will\nsteer future research towards more practical applications of self-correction, especially those where\ntangible benefits can be derived, potentially by leveraging external feedback.\nFurthermore, several related works have already presented findings consistent with our observation:\nthat self-correction, when devoid of external feedback, serves as a relatively weak baseline (Gou\net al., 2023; Zhou et al., 2023a). Despite this, we have identified a prevailing ambiguity in the wider\ncommunity, with even domain experts being uncertain about the intricacies of when and how self-\ncorrection operates. Some existing literature may inadvertently contribute to this confusion, either\n9",
+      "page_start": 9,
+      "page_end": 9,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0024",
+      "section_id": "pdf_f204bfe2e642ab52_sec_016",
+      "section_title": "Limitations And Broader Impact",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "Large Language Models Cannot Self-Correct Reasoning Yet\nby relegating crucial details about label usage to less prominent sections or by failing to clarify\nthat their designed self-correction strategies actually incorporate external feedback. Our intention\nin this paper is to amplify these concerns and offer a comprehensive overview of the state of “self-\ncorrection” in LLMs. The title, “ Large Language Models Cannot Self-Correct Reasoning Yet ”, is\nnot an outright dismissal of self-correction techniques. Instead, it serves as a call to action, urging\nresearchers to approach this domain with a discerning and critical perspective. Furthermore, it\nencourages future research to explore approaches that can genuinely enhance reasoning. For the\nsake of clarity, we recommend omitting the term “self” from concepts like self-correction or self-\ncritique when the context does not strictly adhere to an intrinsic self-correction setting and adopting\nless confusing terms like “correction with external tools/feedback”.\nFinally, in light of our findings that LLMs struggle to self-correct reasoning based purely on their\ninherent capabilities, we urge a more circumspect view on any unwarranted optimism (or fear)\nregarding the autonomous evolution of LLMs (and AI systems) through self-improvement.",
+      "page_start": 10,
+      "page_end": 10,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0025",
+      "section_id": "pdf_f204bfe2e642ab52_sec_016",
+      "section_title": "Limitations And Broader Impact",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "REFERENCES\nHussam Alkaissi and Samy I McFarlane. Artificial hallucinations in chatgpt: implications in scien-\ntific writing. Cureus, 15(2), 2023.\nRohan Anil, Andrew M Dai, Orhan Firat, Melvin Johnson, Dmitry Lepikhin, Alexandre Passos,\nSiamak Shakeri, Emanuel Taropa, Paige Bailey, Zhifeng Chen, et al. Palm 2 technical report.\narXiv preprint arXiv:2305.10403, 2023.\nYuntao Bai, Saurav Kadavath, Sandipan Kundu, Amanda Askell, Jackson Kernion, Andy Jones,\nAnna Chen, Anna Goldie, Azalia Mirhoseini, Cameron McKinnon, et al. Constitutional ai: Harm-\nlessness from ai feedback. arXiv preprint arXiv:2212.08073, 2022.\nYejin Bang, Samuel Cahyawijaya, Nayeon Lee, Wenliang Dai, Dan Su, Bryan Wilie, Holy Lovenia,\nZiwei Ji, Tiezheng Yu, Willy Chung, et al. A multitask, multilingual, multimodal evaluation of\nchatgpt on reasoning, hallucination, and interactivity. arXiv preprint arXiv:2302.04023, 2023.\nS´ebastien Bubeck, Varun Chandrasekaran, Ronen Eldan, Johannes Gehrke, Eric Horvitz, Ece Ka-\nmar, Peter Lee, Yin Tat Lee, Yuanzhi Li, Scott Lundberg, et al. Sparks of artificial general\nintelligence: Early experiments with gpt-4. arXiv preprint arXiv:2303.12712, 2023.\nNicholas Carlini, Florian Tramer, Eric Wallace, Matthew Jagielski, Ariel Herbert-V oss, Katherine\nLee, Adam Roberts, Tom B Brown, Dawn Song, Ulfar Erlingsson, et al. Extracting training data\nfrom large language models. In USENIX Security Symposium, volume 6, 2021.\nJustin Chih-Yao Chen, Swarnadeep Saha, and Mohit Bansal. Reconcile: Round-table conference\nimproves reasoning via consensus among diverse llms. arXiv preprint arXiv:2309.13007, 2023a.\nXinyun Chen, Maxwell Lin, Nathanael Sch ¨arli, and Denny Zhou. Teaching large language models\nto self-debug. arXiv preprint arXiv:2304.05128, 2023b.\nKarl Cobbe, Vineet Kosaraju, Mohammad Bavarian, Mark Chen, Heewoo Jun, Lukasz Kaiser,\nMatthias Plappert, Jerry Tworek, Jacob Hilton, Reiichiro Nakano, et al. Training verifiers to\nsolve math word problems. arXiv preprint arXiv:2110.14168, 2021.\nYilun Du, Shuang Li, Antonio Torralba, Joshua B Tenenbaum, and Igor Mordatch. Improv-\ning factuality and reasoning in language models through multiagent debate. arXiv preprint\narXiv:2305.14325, 2023.\nDeep Ganguli, Amanda Askell, Nicholas Schiefer, Thomas Liao, Kamil ˙e Lukoˇsi¯ut˙e, Anna Chen,\nAnna Goldie, Azalia Mirhoseini, Catherine Olsson, Danny Hernandez, et al. The capacity for\nmoral self-correction in large language models. arXiv preprint arXiv:2302.07459, 2023.\nLuyu Gao, Zhuyun Dai, Panupong Pasupat, Anthony Chen, Arun Tejasvi Chaganty, Yicheng Fan,\nVincent Zhao, Ni Lao, Hongrae Lee, Da-Cheng Juan, et al. Rarr: Researching and revising what\nlanguage models say, using language models. In Proceedings of the 61st Annual Meeting of the\nAssociation for Computational Linguistics (Volume 1: Long Papers), pp. 16477–16508, 2023.\n10",
+      "page_start": 10,
+      "page_end": 10,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0026",
+      "section_id": "pdf_f204bfe2e642ab52_sec_017",
+      "section_title": "References",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "Large Language Models Cannot Self-Correct Reasoning Yet\nZhibin Gou, Zhihong Shao, Yeyun Gong, Yelong Shen, Yujiu Yang, Nan Duan, and Weizhu Chen.\nCritic: Large language models can self-correct with tool-interactive critiquing. arXiv preprint\narXiv:2305.11738, 2023.\nJie Huang and Kevin Chen-Chuan Chang. Towards reasoning in large language models: A sur-\nvey. In Findings of the Association for Computational Linguistics: ACL 2023 . Association for\nComputational Linguistics, 2023.\nJie Huang, Hanyin Shao, and Kevin Chen-Chuan Chang. Are large pre-trained language models\nleaking your personal information? In Findings of the Association for Computational Linguis-\ntics: EMNLP 2022 , pp. 2038–2047, Abu Dhabi, United Arab Emirates, 2022. Association for\nComputational Linguistics.\nSaurav Kadavath, Tom Conerly, Amanda Askell, Tom Henighan, Dawn Drain, Ethan Perez,\nNicholas Schiefer, Zac Hatfield-Dodds, Nova DasSarma, Eli Tran-Johnson, et al. Language mod-\nels (mostly) know what they know. arXiv preprint arXiv:2207.05221, 2022.\nGeunwoo Kim, Pierre Baldi, and Stephen McAleer. Language models can solve computer tasks.\nThe ICML Workshop on Artificial Intelligence & Human Computer Interaction, 2023.\nTakeshi Kojima, Shixiang Shane Gu, Machel Reid, Yutaka Matsuo, and Yusuke Iwasawa. Large\nlanguage models are zero-shot reasoners. Advances in neural information processing systems ,\n35:22199–22213, 2022.\nYann LeCun, L´eon Bottou, Yoshua Bengio, and Patrick Haffner. Gradient-based learning applied to\ndocument recognition. Proceedings of the IEEE, 86(11):2278–2324, 1998.\nHaoran Li, Dadi Guo, Wei Fan, Mingshi Xu, Jie Huang, Fanpu Meng, and Yangqiu Song. Multi-step\njailbreaking privacy attacks on chatgpt. ArXiv preprint, abs/2304.05197, 2023.\nTian Liang, Zhiwei He, Wenxiang Jiao, Xing Wang, Yan Wang, Rui Wang, Yujiu Yang, Zhaopeng\nTu, and Shuming Shi. Encouraging divergent thinking in large language models through multi-\nagent debate. arXiv preprint arXiv:2305.19118, 2023.\nHunter Lightman, Vineet Kosaraju, Yura Burda, Harri Edwards, Bowen Baker, Teddy Lee, Jan\nLeike, John Schulman, Ilya Sutskever, and Karl Cobbe. Let’s verify step by step. arXiv preprint\narXiv:2305.20050, 2023.\nAman Madaan, Niket Tandon, Prakhar Gupta, Skyler Hallinan, Luyu Gao, Sarah Wiegreffe, Uri\nAlon, Nouha Dziri, Shrimai Prabhumoye, Yiming Yang, et al. Self-refine: Iterative refinement\nwith self-feedback. Advances in Neural Information Processing Systems, 2023.\nTheo X Olausson, Jeevana Priya Inala, Chenglong Wang, Jianfeng Gao, and Armando Solar-\nLezama. Demystifying gpt self-repair for code generation. arXiv preprint arXiv:2306.09896 ,\n2023.\nOpenAI. Gpt-4 technical report, 2023.\nLong Ouyang, Jeffrey Wu, Xu Jiang, Diogo Almeida, Carroll Wainwright, Pamela Mishkin, Chong\nZhang, Sandhini Agarwal, Katarina Slama, Alex Ray, et al. Training language models to follow\ninstructions with human feedback. Advances in Neural Information Processing Systems , 35:\n27730–27744, 2022.\nLiangming Pan, Michael Saxon, Wenda Xu, Deepak Nathani, Xinyi Wang, and William Yang\nWang. Automatically correcting large language models: Surveying the landscape of diverse self-\ncorrection strategies. arXiv preprint arXiv:2308.03188, 2023.\nDebjit Paul, Mete Ismayilzada, Maxime Peyrard, Beatriz Borges, Antoine Bosselut, Robert West,\nand Boi Faltings. Refiner: Reasoning feedback on intermediate representations. arXiv preprint\narXiv:2304.01904, 2023.\nEthan Perez, Douwe Kiela, and Kyunghyun Cho. True few-shot learning with language models.\nAdvances in neural information processing systems, 34:11054–11070, 2021.\n11",
+      "page_start": 11,
+      "page_end": 11,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0027",
+      "section_id": "pdf_f204bfe2e642ab52_sec_017",
+      "section_title": "References",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "Large Language Models Cannot Self-Correct Reasoning Yet\nChengwei Qin, Aston Zhang, Zhuosheng Zhang, Jiaao Chen, Michihiro Yasunaga, and Diyi\nYang.\n\nIs chatgpt a general-purpose natural language processing task solver?\n\narXiv preprint\narXiv:2302.06476, 2023.\n\nDavid E Rumelhart, Geoffrey E Hinton, and Ronald J Williams.\n\nLearning representations by back-\npropagating errors.\n\nnature, 323(6088):533–536, 1986.\n\nHanyin Shao, Jie Huang, Shen Zheng, and Kevin Chen-Chuan Chang.\n\nQuantifying association\ncapabilities of large language models and its implications on privacy leakage.\n\narXiv preprint\narXiv:2305.12707, 2023.\n\nFreda Shi, Xinyun Chen, Kanishka Misra, Nathan Scales, David Dohan, Ed H Chi, Nathanael\nSch¨arli, and Denny Zhou.\n\nLarge language models can be easily distracted by irrelevant context.\n\nIn International Conference on Machine Learning, pp.\n\n31210–31227.\n\nPMLR, 2023.\n\nNoah Shinn, Federico Cassano, Beck Labash, Ashwin Gopinath, Karthik Narasimhan, and Shunyu\nYao.\n\nReflexion: Language agents with verbal reinforcement learning.\n\nAdvances in Neural Infor-\nmation Processing Systems, 2023.\n\nRichard S Sutton and Andrew G Barto.\n\nReinforcement learning: An introduction.\n\nMIT press, 2018.\n\nAlon Talmor, Jonathan Herzig, Nicholas Lourie, and Jonathan Berant.\n\nCommonsenseqa: A question\nanswering challenge targeting commonsense knowledge.\n\nIn Proceedings of the 2019 Conference\nof the North American Chapter of the Association for Computational Linguistics: Human Lan-\nguage Technologies, Volume 1 (Long and Short Papers), pp.\n\n4149–4158, 2019.\n\nTianlu Wang, Ping Yu, Xiaoqing Ellen Tan, Sean O’Brien, Ramakanth Pasunuru, Jane Dwivedi-Yu,\nOlga Golovneva, Luke Zettlemoyer, Maryam Fazel-Zarandi, and Asli Celikyilmaz.\n\nShepherd: A\ncritic for language model generation.\n\narXiv preprint arXiv:2308.04592, 2023.\n\nXuezhi Wang, Jason Wei, Dale Schuurmans, Quoc V Le, Ed H Chi, Sharan Narang, Aakanksha\nChowdhery, and Denny Zhou.\n\nSelf-consistency improves chain of thought reasoning in language\nmodels.\n\nIn The Eleventh International Conference on Learning Representations, 2022.\n\nAlexander Wei, Nika Haghtalab, and Jacob Steinhardt.\n\nJailbroken: How does llm safety training\nfail?\n\narXiv preprint arXiv:2307.02483, 2023.\n\nJason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Fei Xia, Ed Chi, Quoc V Le, Denny\nZhou, et al.\n\nChain-of-thought prompting elicits reasoning in large language models.\n\nAdvances in\nNeural Information Processing Systems, 35:24824–24837, 2022.\n\nSean Welleck, Ximing Lu, Peter West, Faeze Brahman, Tianxiao Shen, Daniel Khashabi, and Yejin\nChoi.\n\nGenerating sequences by learning to self-correct.\n\nIn The Eleventh International Conference\non Learning Representations, 2023.\n\nChengrun Yang, Xuezhi Wang, Yifeng Lu, Hanxiao Liu, Quoc V .\n\nLe, Denny Zhou, and Xinyun\nChen.\n\nLarge language models as optimizers.\n\narXiv preprint arXiv:2309.03409, 2023.\n\nZhilin Yang, Peng Qi, Saizheng Zhang, Yoshua Bengio, William Cohen, Ruslan Salakhutdinov,\nand Christopher D Manning.\n\nHotpotqa: A dataset for diverse, explainable multi-hop question\nanswering.\n\nIn Proceedings of the 2018 Conference on Empirical Methods in Natural Language\nProcessing.\n\nAssociation for Computational Linguistics, 2018.\n\nShunyu Yao, Dian Yu, Jeffrey Zhao, Izhak Shafran, Thomas L Griffiths, Yuan Cao, and Karthik\nNarasimhan.\n\nTree of thoughts: Deliberate problem solving with large language models.\n\narXiv\npreprint arXiv:2305.10601, 2023.\n\nShen Zheng, Jie Huang, and Kevin Chen-Chuan Chang.\n\nWhy does chatgpt fall short in providing\ntruthful answers.\n\nArXiv preprint, abs/2304.10513, 2023.",
+      "page_start": 12,
+      "page_end": 12,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0028",
+      "section_id": "pdf_f204bfe2e642ab52_sec_017",
+      "section_title": "References",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "Aojun Zhou, Ke Wang, Zimu Lu, Weikang Shi, Sichun Luo, Zipeng Qin, Shaoqing Lu, Anya Jia,\nLinqi Song, Mingjie Zhan, et al.\n\nSolving challenging math word problems using gpt-4 code\ninterpreter with code-based self-verification.\n\narXiv preprint arXiv:2308.07921, 2023a.\n\n12",
+      "page_start": 12,
+      "page_end": 12,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0029",
+      "section_id": "pdf_f204bfe2e642ab52_sec_017",
+      "section_title": "References",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "Large Language Models Cannot Self-Correct Reasoning Yet\nDenny Zhou, Nathanael Sch ¨arli, Le Hou, Jason Wei, Nathan Scales, Xuezhi Wang, Dale Schuur-\nmans, Claire Cui, Olivier Bousquet, Quoc V Le, et al. Least-to-most prompting enables complex\nreasoning in large language models. In The Eleventh International Conference on Learning Rep-\nresentations, 2023b.\nYongchao Zhou, Andrei Ioan Muresanu, Ziwen Han, Keiran Paster, Silviu Pitis, Harris Chan, and\nJimmy Ba. Large language models are human-level prompt engineers. In The Eleventh Interna-\ntional Conference on Learning Representations, 2022.\nAndy Zou, Zifan Wang, J Zico Kolter, and Matt Fredrikson. Universal and transferable adversarial\nattacks on aligned language models. arXiv preprint arXiv:2307.15043, 2023.\n13",
+      "page_start": 13,
+      "page_end": 13,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0030",
+      "section_id": "pdf_f204bfe2e642ab52_sec_017",
+      "section_title": "References",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "Large Language Models Cannot Self-Correct Reasoning Yet",
+      "page_start": 14,
+      "page_end": 14,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0031",
+      "section_id": "pdf_f204bfe2e642ab52_sec_017",
+      "section_title": "References",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "A P ROMPTS AND EXAMPLE OUTPUTS\nCan you solve the following math problem? Christina is planning a\nbirthday party and needs .75 gift bags per invited guest, because 1/4 of\nattendees don't show up. She invited 16 friends. Gift bags are $2 each.\nHow much will she spend? Explain your reasoning. Your final answer should\nbe a single numerical number, in the form \\boxed{answer}, at the end of\nyour response.\nIf Christina invited 16 friends, then 1/4 of them won't show up, which\nmeans there will be 16 * 1/4 = 4 friends who won't attend the party. To\ndetermine how many gift bags to buy, we need to subtract the number of\nfriends who won't show up from the total number of invited guests. The\nnumber of invited guests is 16 - 4 = 12. Since Christina needs 0.75 gift\nbags per invited guest, we can multiply this quantity by the number of\ninvited guests to find the total number of gift bags needed, which is\n0.75 * 12 = 9 gift bags. If each gift bag is $2, then Christina will\nspend a total of 2 * 9 = $<<2*9=18>>18 on gift bags. Therefore, Christina\nwill spend $18 on gift bags. Answer: \\boxed{18}. (Incorrect)\nReview your previous answer and find problems with your answer.\nUpon reviewing my previous answer, I recognize a mistake. I incorrectly\nstated that Christina needs 0.75 gift bags per invited guest. The given\ninformation states that 1/4 of the attendees won't show up, so the\ncorrect calculation should take this into account. To calculate the\nnumber of gift bags needed, we will multiply the number of invited guests\nby the ratio of attendees who will actually show up (75%). The number of\ninvited guests is 16, and if 1/4 of them won't show up, then the ratio of\nattendees who will show up is 1 - 1/4 = 3/4. Multiplying the number of\ninvited guests by the ratio of attendees who will show up gives us: 16 *\n(3/4) = 12 gift bags needed. Since each gift bag costs $2, the total\namount Christina will spend on gift bags is: 12 * $2 = $<<12*2=24>>24.\nBased on the problems you found, improve your answer. Please reiterate\nyour answer, with your final answer a single numerical number, in the\nform \\boxed{answer}.\nUpon reviewing my previous answer, I recognize a mistake. I incorrectly\nstated that Christina needs 0.75 gift bags per invited guest. The given\ninformation states that 1/4 of the attendees won't show up, so the\ncorrect calculation should take this into account. To calculate the\nnumber of gift bags needed, we will multiply the number of invited guests\nby the ratio of attendees who will actually show up (75%). The number of\ninvited guests is 16, and if 1/4 of them won't show up, then the ratio of\nattendees who will show up is 1 - 1/4 = 3/4. Multiplying the number of\ninvited guests by the ratio of attendees who will show up gives us: 16 *\n(3/4) = 12 gift bags needed. Since each gift bag costs $2, the total\namount Christina will spend on gift bags is: 12 * $2 = $<<12*2=24>>24.\nTherefore, Christina will spend $24 on gift bags. Answer: \\boxed{24}.\n(Correct)\nFigure 3: Example on GSM8K where self-correction changes an incorrect answer to a correct one.\nText in bold denotes user prompts.\n14",
+      "page_start": 14,
+      "page_end": 14,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0032",
+      "section_id": "pdf_f204bfe2e642ab52_sec_018",
+      "section_title": "Prompts And Example Outputs",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "Large Language Models Cannot Self-Correct Reasoning Yet\nCan you solve the following math problem? Terry eats 2 yogurts a day.\nThey are currently on sale at 4 yogurts for $5.00. How much does he spend\non yogurt over 30 days? Explain your reasoning. Your final answer should\nbe a single numerical number, in the form \\boxed{answer}, at the end of\nyour response.\nFirst, we need to calculate how many sets of 4 yogurts Terry buys in 30\ndays. Since Terry eats 2 yogurts a day, he will need 2/4 = 0.5 sets of 4\nyogurts per day. Next, we multiply the number of sets by the price of\neach set to calculate how much Terry spends per day. Each set of 4\nyogurts costs $5.00, so Terry spends 0.5 * $5.00 = $<<0.5*5=2.50>>2.50 on\nyogurt per day. Finally, we multiply the amount Terry spends per day by\nthe number of days to find the total amount he spends on yogurt over 30\ndays. Terry spends $2.50 per day for 30 days, so he spends $2.50 * 30 =\n$<<2.5*30=75.00>>75.00 on yogurt over 30 days. So, Terry spends\n$\\boxed{75.00}$ on yogurt over 30 days. (Correct)\nReview your previous answer and find problems with your answer.\nUpon reviewing my previous answer, I realized that I made a mistake in\ncalculating Terry's spending on yogurt over 30 days. I incorrectly stated\nthat Terry spends $2.50 per day for 30 days, resulting in a total of\n$75.00. However, since Terry eats 2 yogurts a day and the yogurts are\nsold in sets of 4 for $5.00, Terry would actually need to buy 1 set of 4\nyogurts to last for 2 days. Therefore, his spending on yogurt per set\nwould be $5.00 for 2 days, or $5.00/2 = $2.50 per day. To calculate the\ntotal amount spent on yogurt over 30 days, we would multiply the amount\nspent per day ($2.50) by the number of sets needed in 30 days (which is\n30 divided by 2 days per set). Therefore, the correct calculation would\nbe $2.50 * (30/2) = $2.50 * 15 = $37.50. Apologies for the mistake. The\ncorrect answer is Terry spends $\\boxed{37.50}$ on yogurt over 30 days.\nBased on the problems you found, improve your answer. Please reiterate\nyour answer, with your final answer a single numerical number, in the\nform \\boxed{answer}.\nApologies for the error in my previous response. Upon reviewing the\nproblem, here is the correct answer: Since Terry eats 2 yogurts a day and\nthe yogurts are sold in sets of 4 for $5.00, Terry needs to buy 1 set of\n4 yogurts to last for 2 days. Therefore, Terry's spending on yogurt per\nset is $5.00 for 2 days, or $5.00/2 = $2.50 per day. To calculate the\ntotal amount spent on yogurt over 30 days, we multiply the amount spent\nper day ($2.50) by the number of sets needed in 30 days. In this case,\nTerry needs 30/2 = 15 sets of yogurts over 30 days. Multiplying $2.50 by\n15, we find that Terry spends a total of $2.50 * 15 = $37.50 on yogurt\nover 30 days. Therefore, the final answer is Terry spends $\\boxed{37.50}$\non yogurt over 30 days. (Incorrect)\nFigure 4: Example on GSM8K where self-correction changes a correct answer to an incorrect one.\n15",
+      "page_start": 15,
+      "page_end": 15,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0033",
+      "section_id": "pdf_f204bfe2e642ab52_sec_018",
+      "section_title": "Prompts And Example Outputs",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "Large Language Models Cannot Self-Correct Reasoning Yet\nCan you solve the following math problem? Toulouse has twice as many\nsheep as Charleston. Charleston has 4 times as many sheep as Seattle. How\nmany sheep do Toulouse, Charleston, and Seattle have together if Seattle\nhas 20 sheep? Explain your reasoning. Your final answer should be a\nsingle numerical number, in the form \\boxed{answer}, at the end of your\nresponse.\nLet's start by figuring out how many sheep Charleston has. We are given\nthat Charleston has 4 times as many sheep as Seattle, so we can calculate\nthis by multiplying Seattle's number of sheep by 4: Charleston = 4 * 20 =\n80 sheep. Next, we are told that Toulouse has twice as many sheep as\nCharleston. Therefore, we can find Toulouse's number of sheep by\nmultiplying Charleston's number of sheep by 2: Toulouse = 2 * 80 = 160\nsheep. Finally, to find the total number of sheep, we add up the number\nof sheep for each city: Total = Seattle + Charleston + Toulouse = 20 + 80\n+ 160 = 260 sheep. Therefore, Toulouse, Charleston, and Seattle have a\ntotal of 260 sheep. Answer: \\boxed{260}. (Correct)\nReview your previous answer and find problems with your answer.\nI apologize for the mistake in my previous response. Let's go through the\nproblem again and find the correct answer. We are given that Charleston\nhas 4 times as many sheep as Seattle. If Seattle has 20 sheep, then\nCharleston would have: Charleston = 4 * 20 = 80 sheep. Next, we are told\nthat Toulouse has twice as many sheep as Charleston. Therefore, Toulouse\nwould have: Toulouse = 2 * 80 = 160 sheep. To find the total number of\nsheep, we add up the number of sheep for each city: Total = Seattle +\nCharleston + Toulouse = 20 + 80 + 160 = 260 sheep. After reviewing my\nprevious answer, I have determined that there are no problems with my\nupdated response. The correct answer is 260 sheep.\nBased on the problems you found, improve your answer. Please reiterate\nyour answer, with your final answer a single numerical number, in the\nform \\boxed{answer}.\nApologies for the confusion. Let me provide an improved answer. We are\ngiven that Charleston has 4 times as many sheep as Seattle, and Seattle\nhas 20 sheep. So, Charleston would have 4 * 20 = 80 sheep. According to\nthe information, Toulouse has twice as many sheep as Charleston.\nTherefore, Toulouse would have 2 * 80 = 160 sheep. To determine the total\nnumber of sheep, we add up the number of sheep for each city: Total =\nSeattle + Charleston + Toulouse = 20 + 80 + 160 = 260 sheep. After\nreviewing the previous answer, the correct final answer is \\boxed{260}.\n(Correct)\nFigure 5: Example on GSM8K where self-correction does not change the answer.\n16",
+      "page_start": 16,
+      "page_end": 16,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0034",
+      "section_id": "pdf_f204bfe2e642ab52_sec_018",
+      "section_title": "Prompts And Example Outputs",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "Large Language Models Cannot Self-Correct Reasoning Yet\nQ: A fencing thrust with a sharp sword towards a person would result in\nwhat?\nAnswer Choices: (A) injury (B) small cuts (C) fever (D) competition (E)\npuncture wound.\nExplain your reasoning. You must choose only one option from A to E. Your\nfinal answer should be a single letter from A to E, in the form (answer),\nat the end of your response.\nA: A fencing thrust with a sharp sword towards a person would result in a\npuncture wound. This is because a fencing thrust involves forcefully\nstabbing with a sword, which can penetrate the skin and create a deep,\nnarrow wound. Puncture wounds can be very dangerous as they can damage\ninternal organs and cause bleeding. Therefore, the most appropriate\nanswer is (E) puncture wound. (Correct)\nReview your previous answer and find problems with your answer.\nUpon reviewing my previous answer, I realize that there are some problems\nwith it. While a fencing thrust with a sharp sword can potentially result\nin a puncture wound, it is important to note that in a controlled fencing\nmatch, the swords used are typically blunted or have safety tips,\ndesigned to minimize the risk of injury. Therefore, the likelihood of a\npuncture wound from a fencing thrust with a sharp sword in a regulated\nfencing context is quite low. A more appropriate and accurate answer\nwould be (D) competition, as a fencing thrust with a sharp sword is\ntypically performed in the context of a fencing match or competition,\nrather than with the intention to cause injury.\nBased on the problems you found, improve your answer. You must choose\nonly one option from A to E. Please reiterate your answer, with your\nfinal answer a single letter from A to E, in the form (answer).\nBased on the problems with my previous answer, I apologize for the\nincorrect response. In a controlled fencing match with a sharp sword, a\nfencing thrust is likely to result in (D) competition, rather than injury\nor a puncture wound. Therefore, the correct final answer is (D)\ncompetition. (Incorrect)\nFigure 6: Example on CommonSenseQA where self-correction changes a correct answer to an in-\ncorrect one.\n17",
+      "page_start": 17,
+      "page_end": 17,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0035",
+      "section_id": "pdf_f204bfe2e642ab52_sec_018",
+      "section_title": "Prompts And Example Outputs",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "Large Language Models Cannot Self-Correct Reasoning Yet\nConcepts: ['footage', 'motion', 'ruin', 'tilt', 'window']\nSentence: time lapse footage with tilt up motion of the sun streaking\nthrough window of ruin\n###\nConcepts: ['cause', 'hate', 'hut', 'local', 'love']\nSentence: new beach huts on the island have caused some controversy some\nlocals love them others hate them\n[8 more in-context examples]\n###\nConcepts: ['vest', 'snow','remove', 'silhouette', 'dunk', 'step',\n'item', 'toddler', 'plaster', 'wall', 'piece', 'tool', 'circle',\n'pull','wrap', 'headphone', 'deck', 'suit', 'press', 'mother', 'pit',\n'cupcake', 'priest', 'rink', 'counter', 'rest','piano', 'wine', 'serve',\n'winter']\nSentence: A toddler wearing a vest and snow boots steps onto the icy\ndeck, removes a circle-shaped piece of plaster from the wall, and pulls\nout a tool from their winter suit to wrap their head around a headphone.\nFigure 7: Example output for Constrained Generation using the pre-hoc prompt from Madaan et al.\n(2023). The constraint that the output needs to contain all the concepts is not explicitly mentioned\nin the prompt. However, in the feedback & refine (post-hoc) prompts, the constraint is implied by\n“what concepts from the concept list are missing from the sentence?” (refer to Figures 25 and 26 of\nMadaan et al. (2023) for the prompts).\nConcepts: ['vest', 'snow','remove', 'silhouette', 'dunk', 'step',\n'item', 'toddler', 'plaster', 'wall', 'piece', 'tool', 'circle',\n'pull','wrap', 'headphone', 'deck', 'suit', 'press', 'mother', 'pit',\n'cupcake', 'priest', 'rink', 'counter', 'rest','piano', 'wine', 'serve',\n'winter']\nWrite a reasonable paragraph that includes *ALL* of the above concepts.\nIn the winter wonderland, a mother dressed in a warm vest watched her\ntoddler play in the snow. As the child attempted to remove the snow from\nthe ground, their silhouette created an enchanting image against the\nwhite backdrop. Nearby, a group of friends gathered around a basketball\nhoop, taking turns to dunk the ball with skillful steps. One of them,\nholding an item resembling a tool, used it to plaster a piece of the wall\nthat had been damaged. Meanwhile, on the other side of the park, a circle\nof children pulled their hats tightly to wrap around their heads,\nprotecting their ears from the cold wind as they listened to music\nthrough their colorful headphones. On the deck of a nearby house, a man\nin a sleek suit pressed a button, causing a hidden mechanism to reveal a\ngrand piano. As the music filled the air, the host served glasses of wine\nto the guests, creating a warm and inviting atmosphere in the winter\nevening. In the distance, a priest skated gracefully in an ice rink, his\nmovements mirroring the smoothness of his words during a sermon. At the\ncounter of a bakery, a customer ordered a cupcake and watched as the\nbaker skillfully decorated it with a winter-themed design. Not far away,\na group of friends gathered around a pit, roasting marshmallows and\nenjoying the warmth of the fire. The scene painted a picture of joy,\nfriendship, and the beauty of winter.\nFigure 8: Example output for Constrained Generation using a prompt casually written by the authors.\n18",
+      "page_start": 18,
+      "page_end": 18,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0036",
+      "section_id": "pdf_f204bfe2e642ab52_sec_018",
+      "section_title": "Prompts And Example Outputs",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "Large Language Models Cannot Self-Correct Reasoning Yet",
+      "page_start": 19,
+      "page_end": 19,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0037",
+      "section_id": "pdf_f204bfe2e642ab52_sec_018",
+      "section_title": "Prompts And Example Outputs",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    },
+    {
+      "text": "B A DDITIONAL RESULTS ON GSM8K\nTable 6: Results of GPT-3.5 on GSM8K with different feedback prompts.\n# calls GSM8K\nStandard Prompting 1 75.9\nFeedback Prompt: Review your previous answer and find problems with your answer.\nSelf-Correct (round 1) 3 75.1\nSelf-Correct (round 2) 5 74.7\nFeedback Prompt: Review your previous answer and determine whether it’s correct.\nIf wrong, find the problems with your answer.\nSelf-Correct (round 1) 3 75.5\nSelf-Correct (round 2) 5 75.4\nFeedback Prompt: Verify whether your answer is correct, and provide an explanation.\nSelf-Correct (round 1) 3 75.4\nSelf-Correct (round 2) 5 74.4\n19",
+      "page_start": 19,
+      "page_end": 19,
+      "chunk_id": "pdf_f204bfe2e642ab52_chunk_0038",
+      "section_id": "pdf_f204bfe2e642ab52_sec_019",
+      "section_title": "Additional Results On Gsm8K",
+      "content_type": "body_text",
+      "location_confidence": "high"
+    }
+  ],
+  "elements": [
+    {
+      "element_id": "pdf_f204bfe2e642ab52_table_1",
+      "element_type": "table",
+      "label": "Table 1",
+      "caption": "Table 1: Results of GPT-3.5 and GPT-4 on reasoning benchmarks with the setting in Section 3.1.1.",
+      "page_number": 4,
+      "section_id": "pdf_f204bfe2e642ab52_sec_006",
+      "extracted_text": null,
+      "parse_quality": "partial"
+    },
+    {
+      "element_id": "pdf_f204bfe2e642ab52_table_2",
+      "element_type": "table",
+      "label": "Table 2",
+      "caption": "Table 2: Comparison of Self-Correct (Oracle) with a",
+      "page_number": 4,
+      "section_id": "pdf_f204bfe2e642ab52_sec_008",
+      "extracted_text": null,
+      "parse_quality": "partial"
+    },
+    {
+      "element_id": "pdf_f204bfe2e642ab52_table_3",
+      "element_type": "table",
+      "label": "Table 3",
+      "caption": "Table 3: Results of GPT-3.5 and GPT-4 on reasoning benchmarks withintrinsic self-correction.",
+      "page_number": 5,
+      "section_id": "pdf_f204bfe2e642ab52_sec_009",
+      "extracted_text": null,
+      "parse_quality": "partial"
+    },
+    {
+      "element_id": "pdf_f204bfe2e642ab52_figure_1",
+      "element_type": "figure",
+      "label": "Figure 1",
+      "caption": "Figure 1: Analysis of the changes in answers after two rounds of self-correction. No Change: The",
+      "page_number": 5,
+      "section_id": "pdf_f204bfe2e642ab52_sec_009",
+      "extracted_text": null,
+      "parse_quality": "partial"
+    },
+    {
+      "element_id": "pdf_f204bfe2e642ab52_figure_2",
+      "element_type": "figure",
+      "label": "Figure 2",
+      "caption": "Figure 2: Examples on GSM8K (Cobbe et al., 2021). Left: successful self-correction; Right: failed",
+      "page_number": 6,
+      "section_id": "pdf_f204bfe2e642ab52_sec_010",
+      "extracted_text": null,
+      "parse_quality": "partial"
+    },
+    {
+      "element_id": "pdf_f204bfe2e642ab52_table_4",
+      "element_type": "table",
+      "label": "Table 4",
+      "caption": "Table 4: Results of multi-agent debate and self-",
+      "page_number": 7,
+      "section_id": "pdf_f204bfe2e642ab52_sec_012",
+      "extracted_text": null,
+      "parse_quality": "partial"
+    },
+    {
+      "element_id": "pdf_f204bfe2e642ab52_table_5",
+      "element_type": "table",
+      "label": "Table 5",
+      "caption": "Table 5: Results of Constrained Generation.",
+      "page_number": 7,
+      "section_id": "pdf_f204bfe2e642ab52_sec_013",
+      "extracted_text": null,
+      "parse_quality": "partial"
+    },
+    {
+      "element_id": "pdf_f204bfe2e642ab52_figure_3",
+      "element_type": "figure",
+      "label": "Figure 3",
+      "caption": "Figure 3: Example on GSM8K where self-correction changes an incorrect answer to a correct one.",
+      "page_number": 14,
+      "section_id": "pdf_f204bfe2e642ab52_sec_018",
+      "extracted_text": null,
+      "parse_quality": "partial"
+    },
+    {
+      "element_id": "pdf_f204bfe2e642ab52_figure_4",
+      "element_type": "figure",
+      "label": "Figure 4",
+      "caption": "Figure 4: Example on GSM8K where self-correction changes a correct answer to an incorrect one.",
+      "page_number": 15,
+      "section_id": "pdf_f204bfe2e642ab52_sec_018",
+      "extracted_text": null,
+      "parse_quality": "partial"
+    },
+    {
+      "element_id": "pdf_f204bfe2e642ab52_figure_5",
+      "element_type": "figure",
+      "label": "Figure 5",
+      "caption": "Figure 5: Example on GSM8K where self-correction does not change the answer.",
+      "page_number": 16,
+      "section_id": "pdf_f204bfe2e642ab52_sec_018",
+      "extracted_text": null,
+      "parse_quality": "partial"
+    },
+    {
+      "element_id": "pdf_f204bfe2e642ab52_figure_6",
+      "element_type": "figure",
+      "label": "Figure 6",
+      "caption": "Figure 6: Example on CommonSenseQA where self-correction changes a correct answer to an in-",
+      "page_number": 17,
+      "section_id": "pdf_f204bfe2e642ab52_sec_018",
+      "extracted_text": null,
+      "parse_quality": "partial"
+    },
+    {
+      "element_id": "pdf_f204bfe2e642ab52_figure_7",
+      "element_type": "figure",
+      "label": "Figure 7",
+      "caption": "Figure 7: Example output for Constrained Generation using the pre-hoc prompt from Madaan et al.",
+      "page_number": 18,
+      "section_id": "pdf_f204bfe2e642ab52_sec_018",
+      "extracted_text": null,
+      "parse_quality": "partial"
+    },
+    {
+      "element_id": "pdf_f204bfe2e642ab52_figure_8",
+      "element_type": "figure",
+      "label": "Figure 8",
+      "caption": "Figure 8: Example output for Constrained Generation using a prompt casually written by the authors.",
+      "page_number": 18,
+      "section_id": "pdf_f204bfe2e642ab52_sec_018",
+      "extracted_text": null,
+      "parse_quality": "partial"
+    },
+    {
+      "element_id": "pdf_f204bfe2e642ab52_table_6",
+      "element_type": "table",
+      "label": "Table 6",
+      "caption": "Table 6: Results of GPT-3.5 on GSM8K with different feedback prompts.",
+      "page_number": 19,
+      "section_id": "pdf_f204bfe2e642ab52_sec_019",
+      "extracted_text": null,
+      "parse_quality": "partial"
+    }
+  ],
+  "links": [],
+  "warnings": [
+    "TABLE_STRUCTURE_UNVERIFIED"
+  ],
+  "source_sha256": "f204bfe2e642ab52abbf3fa94141e644d22a23510d6d64ed8ddc0ee9823eb983",
+  "parser_name": "generic-pypdf-v2",
+  "source_categories": []
+}

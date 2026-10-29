@@ -1,0 +1,150 @@
+{
+  "date": "2026-10-30",
+  "timezone": "Australia/Sydney",
+  "removed": [
+    {
+      "path": "CS2-Team-Repositories/backend/.DS_Store",
+      "file_count": 1,
+      "bytes": 10244
+    },
+    {
+      "path": "CS2-Team-Repositories/backend/.ruff_cache",
+      "file_count": 19,
+      "bytes": 17050
+    },
+    {
+      "path": "CS2-Team-Repositories/frontend/.DS_Store",
+      "file_count": 1,
+      "bytes": 6148
+    },
+    {
+      "path": "CS2-Team-Repositories/data/.DS_Store",
+      "file_count": 1,
+      "bytes": 10244
+    },
+    {
+      "path": "CS2-Team-Repositories/backend/.pytest_cache",
+      "file_count": 5,
+      "bytes": 3466197
+    },
+    {
+      "path": "CS2-Team-Repositories/backend/build",
+      "file_count": 69,
+      "bytes": 383910
+    },
+    {
+      "path": "CS2-Team-Repositories/data/scripts/__pycache__",
+      "file_count": 3,
+      "bytes": 31754
+    },
+    {
+      "path": "CS2-Team-Repositories/data/credibility_r2/__pycache__",
+      "file_count": 7,
+      "bytes": 106690
+    },
+    {
+      "path": "CS2-Team-Repositories/backend/app/__pycache__",
+      "file_count": 3,
+      "bytes": 11645
+    },
+    {
+      "path": "CS2-Team-Repositories/backend/docs/.DS_Store",
+      "file_count": 1,
+      "bytes": 6148
+    },
+    {
+      "path": "CS2-Team-Repositories/backend/tests/__pycache__",
+      "file_count": 112,
+      "bytes": 5258389
+    },
+    {
+      "path": "CS2-Team-Repositories/backend/app/.DS_Store",
+      "file_count": 1,
+      "bytes": 8196
+    },
+    {
+      "path": "CS2-Team-Repositories/backend/scripts/__pycache__",
+      "file_count": 7,
+      "bytes": 240857
+    },
+    {
+      "path": "CS2-Team-Repositories/backend/app/schemas/__pycache__",
+      "file_count": 7,
+      "bytes": 30640
+    },
+    {
+      "path": "CS2-Team-Repositories/backend/app/api/__pycache__",
+      "file_count": 6,
+      "bytes": 38138
+    },
+    {
+      "path": "CS2-Team-Repositories/backend/app/storage/__pycache__",
+      "file_count": 8,
+      "bytes": 93215
+    },
+    {
+      "path": "CS2-Team-Repositories/backend/app/validation/__pycache__",
+      "file_count": 8,
+      "bytes": 51973
+    },
+    {
+      "path": "CS2-Team-Repositories/backend/app/llm/__pycache__",
+      "file_count": 17,
+      "bytes": 146984
+    },
+    {
+      "path": "CS2-Team-Repositories/backend/app/rubrics/__pycache__",
+      "file_count": 2,
+      "bytes": 6758
+    },
+    {
+      "path": "CS2-Team-Repositories/backend/app/tracking/__pycache__",
+      "file_count": 2,
+      "bytes": 3107
+    },
+    {
+      "path": "CS2-Team-Repositories/backend/app/eligibility/__pycache__",
+      "file_count": 2,
+      "bytes": 18869
+    },
+    {
+      "path": "CS2-Team-Repositories/backend/docs/audit/.DS_Store",
+      "file_count": 1,
+      "bytes": 6148
+    },
+    {
+      "path": "CS2-Team-Repositories/backend/docs/testing/.DS_Store",
+      "file_count": 1,
+      "bytes": 6148
+    },
+    {
+      "path": "CS2-Team-Repositories/backend/app/rubric/__pycache__",
+      "file_count": 2,
+      "bytes": 8225
+    },
+    {
+      "path": "CS2-Team-Repositories/backend/app/credibility/__pycache__",
+      "file_count": 39,
+      "bytes": 1002117
+    },
+    {
+      "path": "CS2-Team-Repositories/backend/app/pipeline/__pycache__",
+      "file_count": 2,
+      "bytes": 14734
+    },
+    {
+      "path": "CS2-Team-Repositories/backend/app/parsing/__pycache__",
+      "file_count": 8,
+      "bytes": 90341
+    }
+  ],
+  "total_files": 335,
+  "total_bytes": 11074869,
+  "preserved": [
+    "Original nested Git repositories and registered worktrees",
+    "Real .env credentials",
+    "Local backend runtime database/uploads/evidence",
+    "Installed .venv and node_modules dependencies",
+    "Tracked source, docs, curated data and SQL"
+  ]
+}

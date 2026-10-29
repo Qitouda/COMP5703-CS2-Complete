@@ -1,0 +1,362 @@
+{
+  "case_record_format": "r2c-claim-review-0.1-draft",
+  "case_id": "R2C-P002-C01",
+  "record_status": "pending_human_review",
+  "is_gold": false,
+  "gold_evaluation_eligible": false,
+  "prepared_by": "Codex: source inspection and handoff draft",
+  "prepared_at": "2026-10-01T05:17:58Z",
+  "paper": {
+    "paper_id": "paper_002",
+    "paper_version_id": "paper_002_v1",
+    "title": "Large Language Models Cannot Self-Correct Reasoning Yet",
+    "arxiv_id": "2310.01798v1",
+    "version_label": "v1",
+    "source_url": "https://arxiv.org/pdf/2310.01798v1",
+    "pdf_sha256": "f204bfe2e642ab52abbf3fa94141e644d22a23510d6d64ed8ddc0ee9823eb983",
+    "pdf_page_count": 19,
+    "paper_type": "empirical_reasoning_study",
+    "page_number_convention": "1-based PDF page; matches printed page numbers in this version"
+  },
+  "source_audit": {
+    "data_local_head": "8e1ce03953a55b395741064df38f3fba03da4d9e",
+    "data_origin_main": "ae990db5a2ba9249db0bdc3da4dd2926b72b877f",
+    "parsed_files_match_origin_main": [
+      "metadata.json",
+      "chunks.jsonl",
+      "elements.json",
+      "sections.json"
+    ],
+    "download_matches_repository_pdf_sha256": true,
+    "pdf_pages_visually_inspected": [
+      1,
+      3,
+      4,
+      5,
+      19
+    ],
+    "prior_five_dimension_scores_used": false,
+    "research_experiments_reproduced": false
+  },
+  "claim": {
+    "claim_id": "r2c_p002_c01",
+    "dimension_id": "claim_evidence",
+    "importance": "core",
+    "quote_excerpt": "their performance might even degrade post self-correction",
+    "statement_zh": "在本文所测试的条件下，无外部正确答案反馈的推理自我纠错可能降低表现。",
+    "paper_page": 1,
+    "section": "Abstract",
+    "source_chunk_id": "paper_002_v1_chunk_0001",
+    "selection_scope": "仅核查摘要中可能降低推理表现这一子主张；未覆盖摘要和引言的全部重要主张。",
+    "scope_complete": false
+  },
+  "comparison": {
+    "paper_page": 5,
+    "section": "3.2",
+    "locator_label": "Table 3",
+    "source_chunk_id": "paper_002_v1_chunk_0010",
+    "source_chunk_page_range": [
+      4,
+      5
+    ],
+    "source_element_id": "paper_002_v1_table_3",
+    "model": "GPT-4",
+    "model_access_date_reported_in_paper": "2023-08-29",
+    "benchmark": "GSM8K",
+    "evaluation_sample_size": 200,
+    "metric": "accuracy",
+    "unit": "percent",
+    "baseline": {
+      "condition": "initial answer",
+      "model_calls": 1,
+      "value": 95.5
+    },
+    "intervention": {
+      "condition": "two rounds of intrinsic self-correction, without correct-label stopping",
+      "model_calls": 5,
+      "value": 89.0
+    },
+    "difference_percentage_points": -6.5,
+    "conditions_source": {
+      "setup_pages": [
+        3,
+        4
+      ],
+      "setup_chunk_id": "paper_002_v1_chunk_0007",
+      "intrinsic_setting_page": 5,
+      "intrinsic_setting_chunk_id": "paper_002_v1_chunk_0010"
+    },
+    "excluded_comparison": {
+      "paper_page": 4,
+      "locator_label": "Table 1",
+      "reason_zh": "该表使用正确答案判断何时停止，自我纠错条件与表 3 不同；其中的提升不能直接作为本条主张的反证。"
+    },
+    "search_scope_pages": [
+      1,
+      3,
+      4,
+      5,
+      19
+    ]
+  },
+  "candidate_annotation": {
+    "applicability": "applicable",
+    "proposed_outcome": "supported",
+    "reason_zh": "同一模型与数据集下，两轮无正确答案停止反馈的自我纠错结果低于初始结果，支持可能降低表现这一有限主张。",
+    "proposed_score_rule_id": "C_SUPPORTED",
+    "item_score": null,
+    "rubric_version": "0.1-draft",
+    "schema_reference": "credibility-0.1.0-draft",
+    "limitations": [
+      "待两位人工标注者复核和必要的仲裁，不能作为已批准 Gold。",
+      "只核查一条子主张，不能据此生成主张维度分数。",
+      "结果限于该论文的历史模型、数据集和提示条件，不代表所有模型或当前模型。",
+      "仅核对论文内部的主张与证据，没有重新运行论文实验。",
+      "引用存在性和代码／复现检查均尚未执行。"
+    ]
+  },
+  "parse_handoff": {
+    "parser_name": "pdfplumber-structured",
+    "parser_version": "1.0.0",
+    "table_cells": null,
+    "table_parse_quality": "partial",
+    "table_section_id_in_existing_elements": "paper_002_v1_sec_3_2_1",
+    "evidence_section_id_in_existing_chunks": "paper_002_v1_sec_3_2",
+    "reviewer_verified_table_page": 5,
+    "requirements_zh": [
+      "表 3 位于第 5 页；不能以跨页文本块的 page_start=4 代替表格页码。",
+      "表格元素章节与正文块章节不同，需结合表号、原文页面和正文上下文核对。",
+      "手工转录的数值保留来源；后端须自行证明实际解析材料可支持该数值与行列条件。",
+      "实际运行报告的证据 ID 必须映射到该运行的真实文本块，不照抄案例 ID。",
+      "只有 stub 文档或必要表格无法读取时，记录无法判断／技术缺口，不记录论文缺证或矛盾。"
+    ]
+  },
+  "review": {
+    "annotator_a": {
+      "name": null,
+      "reviewed_at": null,
+      "outcome": null,
+      "reason": null
+    },
+    "annotator_b": {
+      "name": null,
+      "reviewed_at": null,
+      "outcome": null,
+      "reason": null
+    },
+    "adjudication": {
+      "name": null,
+      "reviewed_at": null,
+      "outcome": null,
+      "reason": null
+    },
+    "discussion_confirmation": {
+      "actor": "user in current conversation",
+      "confirmed_at": "2026-10-01T05:21:23Z",
+      "outcome": "supported",
+      "scope_zh": "认可 GPT-4／GSM8K、无正确答案停止反馈条件下支持可能降低表现这一限定口径；正式双人复核仍需记录。",
+      "independent_annotation": false
+    },
+    "additional_annotations": [
+      {
+        "annotation_id": "R2C-P002-C01-U01",
+        "actor": "user in current conversation",
+        "name": "Bocheng",
+        "role": "additional_human_confirmation",
+        "status": "submitted_ai_assisted_confirmation",
+        "started_at": "2026-10-01T05:26:58Z",
+        "disposition_recorded_at": "2026-10-01T05:32:39Z",
+        "disposition_reason_zh": "此前于 2026-10-01T05:32:39Z 记录 Bocheng 未进行人工阅读，改为提交另一 GPT 聊天框的模型判断截图，模型意见单独保存为 M01；本次另记录本人确认采用，保留该来源历史。",
+        "confirmed_at": "2026-10-01T05:36:31Z",
+        "assessment_method": "ai_assisted_result_confirmation",
+        "based_on_review_id": "R2C-P002-C01-M01",
+        "confirmation_scope_zh": "Bocheng 确认采用 M01 的 supported 有限判断；模型完成证据整理与初判，Codex 核对原文，本人确认采用结果。",
+        "reviewed_at": null,
+        "source_read_status": "not_started",
+        "source_read_pages": [],
+        "source_read_tables": [],
+        "outcome": "supported",
+        "reason_zh": "确认采用 M01：本文 GPT-4／GSM8K、无外部反馈、两轮内在自我纠错的结果从 95.5% 降至 89.0%，支持在这些条件下可能降低表现的有限主张。该理由沿用模型意见及已有原文核对。",
+        "verified_evidence": null,
+        "conditions_and_limitations_zh": "限于论文测试的历史 GPT-4、GSM8K、无外部反馈及两轮纠错；不外推所有模型、当前模型或总会降低表现。",
+        "uncertainty_zh": "本人确认采用，未独立核读原文；正式双人独立复核与适用规则审核仍待完成。",
+        "prior_conclusion_exposure": true,
+        "exposure_context_zh": "本次正式标注前已看过 Codex 整理的 supported 草案，并在讨论中确认该限定口径。此前讨论确认不自动转换为本次正式标注。",
+        "blind_review": false,
+        "counts_as_human_confirmation": true,
+        "counts_as_independent_human_source_review": false,
+        "gold_evaluation_eligible": false,
+        "replaces_annotator_a_or_b": false
+      }
+    ],
+    "external_model_reviews": [
+      {
+        "review_id": "R2C-P002-C01-M01",
+        "review_type": "external_model_assessment",
+        "submitted_by": "Bocheng",
+        "received_at": "2026-10-01T05:32:39Z",
+        "model_reported_by_user": "6pro",
+        "model_identity_verified": false,
+        "separate_chat_reported_by_user": true,
+        "input_prompt": null,
+        "full_chat_context": null,
+        "prior_conclusion_exposure": null,
+        "blind_review_verified": false,
+        "independence_verified": false,
+        "input_provenance_note_zh": "用户报告来自另一独立聊天框；截图提及用户提供的截图与指定模型、数据集及表格，但没有原始 Prompt 或完整上下文，无法确认是否输入了既有 supported 草案。",
+        "source_screenshot": {
+          "file": "external_model_review_001.png",
+          "sha256": "98f3f401d767552b475eace6b47b8c31e76e8ffcc725b07f312c58b33ea0f3b6",
+          "storage_status": "local_working_file_not_committed_or_pushed"
+        },
+        "outcome": "supported",
+        "reason_summary_zh": "截图认为摘要中的有限主张由第 3.2 节与表 3 的无外部反馈内在自我纠错实验支持；GPT-4 在 GSM8K 上从初始 95.5% 降至两轮后的 89.0%。",
+        "reported_evidence": {
+          "paper_version": "2310.01798v1",
+          "claim_page_verified_by_codex": 1,
+          "support_page_verified_by_codex": 5,
+          "locator_label": "Table 3",
+          "model": "GPT-4",
+          "benchmark": "GSM8K",
+          "metric": "accuracy",
+          "unit": "percent",
+          "initial": 95.5,
+          "round_1": 91.5,
+          "round_2": 89.0,
+          "difference_percentage_points_round_2": -6.5,
+          "model_access_date_reported_in_paper": "2023-08-29",
+          "evaluation_sample_size": 200,
+          "feedback_condition": "intrinsic self-correction without external feedback; correct-label stopping removed",
+          "rounds": 2
+        },
+        "source_content_check": {
+          "checked_by": "Codex",
+          "status": "matches_locked_v1_source",
+          "source_pages": [
+            1,
+            3,
+            4,
+            5
+          ],
+          "research_experiments_reproduced": false
+        },
+        "limitations_zh": [
+          "结论仅针对所查有限主张；不扩大为自我纠错总会降低表现或当前、所有模型的结论。",
+          "无外部反馈的完整条件须保留，不能只理解为没有正确答案标签。",
+          "本条依据固定为 GPT-4／GSM8K 两轮；不扩成每轮每个基准均下降。",
+          "同标签的模型意见可用于开发候选预期；不计作人工标注、正式 Gold 或正确率证据。"
+        ],
+        "counts_as_human_annotation": false,
+        "gold_evaluation_eligible": false,
+        "usage": "provisional_development_case"
+      }
+    ]
+  },
+  "execution": {
+    "backend_source_loader_check": "passed: 30 real source chunks; claim on page 1; Table 3 on page 5",
+    "credibility_api_run_id": null,
+    "model_output": null,
+    "frontend_run_evidence": null,
+    "reference_check": "not_run",
+    "code_check": "not_run",
+    "expected_claim_dimension_score": null,
+    "expected_overall_score": null,
+    "expected_overall_category": null,
+    "generic_pdf_source_validation": {
+      "run_id": "r2c-p002-source-20261001T055118Z",
+      "checked_at": "2026-10-01T05:51:18Z",
+      "status": "passed",
+      "execution_scope": "production_generic_parser_pdf_entrypoint_only",
+      "parser_name": "generic-pypdf-v2",
+      "parser_source_sha256": "f29aeab42b0fd2e695c581a30b176b59496f1922947883b1f601c2cec322e986",
+      "pypdf_version": "6.17.0",
+      "backend_commit": "8ff3e8eb81b4c95b7e3af4320e9405603531ea7f",
+      "runtime_paper_id": "pdf_f204bfe2e642ab52",
+      "source_sha256": "f204bfe2e642ab52abbf3fa94141e644d22a23510d6d64ed8ddc0ee9823eb983",
+      "page_count": 19,
+      "text_block_count": 39,
+      "element_count": 14,
+      "parse_quality": "partial",
+      "warnings": [
+        "TABLE_STRUCTURE_UNVERIFIED"
+      ],
+      "claim_chunk_ids": [
+        "pdf_f204bfe2e642ab52_chunk_0001"
+      ],
+      "table_chunk_id": "pdf_f204bfe2e642ab52_chunk_0013",
+      "table_element_id": "pdf_f204bfe2e642ab52_table_3",
+      "table_page": 5,
+      "condition_chunk_ids": [
+        "pdf_f204bfe2e642ab52_chunk_0008",
+        "pdf_f204bfe2e642ab52_chunk_0013"
+      ],
+      "actual_rows": [
+        {
+          "method": "Standard Prompting",
+          "model_calls": 1,
+          "accuracy_percent": 95.5,
+          "raw_row": "Standard Prompting 1 95.5 82.0 49.0"
+        },
+        {
+          "method": "Self-Correct (round 1)",
+          "model_calls": 3,
+          "accuracy_percent": 91.5,
+          "raw_row": "Self-Correct (round 1) 3 91.5 79.5 49.0"
+        },
+        {
+          "method": "Self-Correct (round 2)",
+          "model_calls": 5,
+          "accuracy_percent": 89.0,
+          "raw_row": "Self-Correct (round 2) 5 89.0 80.0 43.0"
+        }
+      ],
+      "difference_percentage_points": -6.5,
+      "checks": {
+        "locked_pdf_sha256": true,
+        "page_count": true,
+        "complete_title": true,
+        "abstract_contains_claim": true,
+        "abstract_defines_no_external_feedback": true,
+        "claim_has_page_1_chunk": true,
+        "table_3_has_page_5_chunk": true,
+        "table_and_chunk_same_section": true,
+        "baseline_row": true,
+        "round_1_row": true,
+        "round_2_row": true,
+        "difference_percentage_points": true,
+        "reported_accuracy_metric": true,
+        "historical_model_and_sample_conditions": true,
+        "correct_label_stopping_removed": true,
+        "caption_locations": true,
+        "table_structure_limitation_retained": true
+      },
+      "api_runtime_executed": false,
+      "model_called": false,
+      "credibility_classification_executed": false,
+      "table_cell_structure_verified": false,
+      "artifact_directory": "backend/docs/testing/2026-10-01-r2c-paper002-source",
+      "reproduction_script": "backend/scripts/verify_paper_002_source.py",
+      "backend_tests_passed": 131,
+      "changed_file_lint": "passed",
+      "storage_status": "git_versioned_handoff",
+      "published_backend_commit": "1ae578b9ad12697838f6fbc039101fcef012f2cb",
+      "published_tag": "r2c-sync-2026-10-01"
+    }
+  },
+  "publication": {
+    "handoff_tag": "r2c-sync-2026-10-01",
+    "branch": "chore/r2c-sync-2026-10-01",
+    "backend_commit": "1ae578b9ad12697838f6fbc039101fcef012f2cb",
+    "frontend_commit": "54cc58a6ca4c97bea9a915e1952843ab9995c891",
+    "data_base_commit": "ae990db5a2ba9249db0bdc3da4dd2926b72b877f",
+    "case_url": "https://github.com/eden-eden-new/cs2-paper-benchmark/blob/r2c-sync-2026-10-01/data/credibility_cases/paper_002/v1/claim_001.review.json",
+    "backend_source_validation_url": "https://github.com/kanekogaido/cs2-capstone--backend/blob/r2c-sync-2026-10-01/docs/testing/2026-10-01-r2c-paper002-source/README.zh-CN.md",
+    "release_validation": {
+      "backend_tests_passed": 140,
+      "frontend_tests_passed": 22,
+      "data_manifest_records": 50,
+      "data_validation_errors": 0
+    },
+    "note": "Historical validation run fields are retained; publication does not change annotation provenance, Gold eligibility or scope."
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "reason": "Relocate mutable handoff provenance to an immutable byte-identical source; no sample facts changed.",
+  "recorded_at": "2026-10-19T05:31:40.075238+00:00",
+  "original_selection_sha256": "2cf5621906e0ac1154a55980df8ad7d4ac915ce6b0b308166b72746b7e05ec98",
+  "relocated_selection_sha256": "6e69cdbc0790ff644b4392b91517ec1e5ce2d1689bfeee2fbb0df70e8bcd0211",
+  "original_manifest_file_sha256": "f8a479b54ded84d302e471aacbec2c1d8766b761fad546cfa73d38a9cde4ed4d",
+  "original_manifest_archive": "docs/credibility/frozen/be07-six-paper-v1/acceptance-samples.original.json",
+  "source_bytes_verified_against": "Git HEAD and editable handoff bytes before the 2026-10-19 appendix",
+  "changes": [
+    {
+      "sample_id": "paper_001",
+      "source_sha256": "5def1e801d8ad9e18dcd69ec928301e761a4e0f993f8e72339d45395574fe0e7",
+      "old_path": "docs/credibility/task3-haichen-sun.md",
+      "new_path": "docs/credibility/frozen/be07-six-paper-v1/task3-haichen-sun.source.md"
+    }
+  ]
+}

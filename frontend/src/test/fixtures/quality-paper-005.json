@@ -1,0 +1,806 @@
+{
+  "schema_version": "0.4",
+  "assessment_id": "asmt_21def1588469",
+  "status": "completed",
+  "stage": "report_ready",
+  "progress_percent": 100,
+  "source": {
+    "type": "arxiv",
+    "arxiv_id": "2310.07923v5",
+    "original_url": "https://arxiv.org/abs/2310.07923v5",
+    "upload_id": null,
+    "original_filename": null
+  },
+  "venue": {
+    "venue_id": "iclr_2027_main",
+    "code": "ICLR",
+    "name": "International Conference on Learning Representations",
+    "year": 2027,
+    "track": "main",
+    "rubric_id": "iclr_inspired_due_diligence",
+    "rubric_version": "0.1-draft"
+  },
+  "model": {
+    "model_id": "model_gpt_v1",
+    "display_name": "GPT Review Model",
+    "provider": "openai",
+    "model_version": "gpt-6.1-sol"
+  },
+  "paper": {
+    "paper_id": "arxiv_2310_07923v5",
+    "title": "The Expressive Power of Transformers with Chain of Thought",
+    "authors": [],
+    "abstract": "Recent theoretical work has identiﬁed surprisingly simple reasoning problems,\nsuch as checking if two nodes in a graph are connected or simul ating ﬁnite-state\nmachines, that are provably unsolvable by standard transfo rmers that answer im-\nmediately after reading their input. However, in practice, transformers’ reason-\ning can be improved by allowing them to use a “chain of thought ” or “scratch-\npad”, i.e., generate and condition on a sequence of intermed iate tokens before\nanswering. Motivated by this, we ask: Does such intermediate generation fun-\ndamentally extend the computational power of a decoder-onl y transformer? We\nshow that the answer is yes, but the amount of increase depends crucially on the\namount of intermediate generation. For instance, we ﬁnd tha t transformer de-\ncoders with a logarithmic number of decoding steps (w.r.t. t he input length) push\nthe limits of standard transformers only slightly, while a linear number of decoding\nsteps, assuming projected pre-norm (a slight generalization of standard pre-norm),\nadds a clear new ability (under standard complexity conject ures): recognizing\nall regular languages. Our results also imply that linear st eps keep transformer\ndecoders within context-sensitive languages, and polynom ial steps with general-\nized pre-norm make them recognize exactly the class of polyn omial-time solvable\nproblems—the ﬁrst exact characterization of a type of trans formers in terms of\nstandard complexity classes. Together, this provides a nua nced framework for\nunderstanding how the length of a transformer’s chain of tho ught or scratchpad\nimpacts its reasoning power.",
+    "language": "en",
+    "page_count": 17,
+    "arxiv_id": "2310.07923v5",
+    "doi": null,
+    "sections": [
+      {
+        "section_id": "arxiv_2310_07923v5_sec_000",
+        "title": "Front Matter",
+        "level": 1,
+        "page_start": 1,
+        "page_end": 1
+      },
+      {
+        "section_id": "arxiv_2310_07923v5_sec_001",
+        "title": "Abstract",
+        "level": 1,
+        "page_start": 1,
+        "page_end": 1
+      },
+      {
+        "section_id": "arxiv_2310_07923v5_sec_002",
+        "title": "Introduction",
+        "level": 1,
+        "page_start": 1,
+        "page_end": 2
+      },
+      {
+        "section_id": "arxiv_2310_07923v5_sec_003",
+        "title": "Main Results : Power Of Transformers With Intermediate Decoding",
+        "level": 2,
+        "page_start": 2,
+        "page_end": 3
+      },
+      {
+        "section_id": "arxiv_2310_07923v5_sec_004",
+        "title": "Log Steps: Transformer decoders with O(logn) intermediate steps can only recognize lan-",
+        "level": 1,
+        "page_start": 3,
+        "page_end": 3
+      },
+      {
+        "section_id": "arxiv_2310_07923v5_sec_005",
+        "title": "Linear Steps : Transformer decoders with O(n) intermediate steps can only recognize",
+        "level": 1,
+        "page_start": 3,
+        "page_end": 4
+      },
+      {
+        "section_id": "arxiv_2310_07923v5_sec_006",
+        "title": "Preliminaries",
+        "level": 1,
+        "page_start": 4,
+        "page_end": 4
+      },
+      {
+        "section_id": "arxiv_2310_07923v5_sec_007",
+        "title": "Transformers",
+        "level": 2,
+        "page_start": 4,
+        "page_end": 4
+      },
+      {
+        "section_id": "arxiv_2310_07923v5_sec_008",
+        "title": "An output function γ : Dm",
+        "level": 1,
+        "page_start": 4,
+        "page_end": 5
+      },
+      {
+        "section_id": "arxiv_2310_07923v5_sec_009",
+        "title": "Q is a ﬁnite set of states containing initial state q0",
+        "level": 1,
+        "page_start": 5,
+        "page_end": 5
+      },
+      {
+        "section_id": "arxiv_2310_07923v5_sec_010",
+        "title": "F ⊆Q is a set of halting states",
+        "level": 1,
+        "page_start": 5,
+        "page_end": 10
+      },
+      {
+        "section_id": "arxiv_2310_07923v5_sec_011",
+        "title": "Acknowledgements",
+        "level": 1,
+        "page_start": 10,
+        "page_end": 10
+      },
+      {
+        "section_id": "arxiv_2310_07923v5_sec_012",
+        "title": "References",
+        "level": 1,
+        "page_start": 10,
+        "page_end": 11
+      },
+      {
+        "section_id": "arxiv_2310_07923v5_sec_013",
+        "title": "Transformer Components",
+        "level": 1,
+        "page_start": 11,
+        "page_end": 11
+      },
+      {
+        "section_id": "arxiv_2310_07923v5_sec_014",
+        "title": "Generalized Pre-Norm",
+        "level": 2,
+        "page_start": 11,
+        "page_end": 12
+      },
+      {
+        "section_id": "arxiv_2310_07923v5_sec_015",
+        "title": "Transformer Embeddings",
+        "level": 2,
+        "page_start": 12,
+        "page_end": 12
+      },
+      {
+        "section_id": "arxiv_2310_07923v5_sec_016",
+        "title": "Self Attention",
+        "level": 2,
+        "page_start": 12,
+        "page_end": 12
+      },
+      {
+        "section_id": "arxiv_2310_07923v5_sec_017",
+        "title": "A Ctivation Block",
+        "level": 2,
+        "page_start": 12,
+        "page_end": 13
+      },
+      {
+        "section_id": "arxiv_2310_07923v5_sec_018",
+        "title": "Turing Machines",
+        "level": 1,
+        "page_start": 13,
+        "page_end": 13
+      },
+      {
+        "section_id": "arxiv_2310_07923v5_sec_019",
+        "title": "Layer-Norm Hash",
+        "level": 1,
+        "page_start": 13,
+        "page_end": 14
+      },
+      {
+        "section_id": "arxiv_2310_07923v5_sec_020",
+        "title": "Input Tape Retrieval Via The Layer-Norm Hash",
+        "level": 1,
+        "page_start": 14,
+        "page_end": 15
+      },
+      {
+        "section_id": "arxiv_2310_07923v5_sec_021",
+        "title": "Rightmost Retrieval Via The Layer-Norm Hash",
+        "level": 1,
+        "page_start": 15,
+        "page_end": 15
+      },
+      {
+        "section_id": "arxiv_2310_07923v5_sec_022",
+        "title": "Tie-Breaking Term",
+        "level": 2,
+        "page_start": 15,
+        "page_end": 17
+      }
+    ],
+    "parse_quality": "good",
+    "parse_warnings": []
+  },
+  "report": {
+    "paper_summary": "The paper studies how intermediate generation changes the expressive power of log-precision, decoder-only transformers. It develops a layer-norm hash for retrieval, constructs simulations of automata and bounded-time Turing machines, and derives time and space upper bounds. Logarithmic decoding remains within log space; linear decoding enables regular-language recognition under the stated architectural assumptions; polynomial decoding characterizes P for the studied model. These are expressivity results, not guarantees of learnability or practical reasoning performance.",
+    "claimed_contributions": [
+      {
+        "contribution_id": "contribution_01",
+        "statement": "A layer-norm hash supports numerical key matching and memory retrieval in decoder-only transformer constructions.",
+        "contribution_type": "theory",
+        "evidence_links": [
+          {
+            "evidence_id": "ev_02",
+            "stance": "supports",
+            "reason": "Introduces the hash and its scale-invariance and equality-matching properties."
+          }
+        ]
+      },
+      {
+        "contribution_id": "contribution_02",
+        "statement": "Transformers with projected pre-norm and saturated attention can simulate automata with linear decoding and bounded-time Turing machines with corresponding decoding steps.",
+        "contribution_type": "theory",
+        "evidence_links": [
+          {
+            "evidence_id": "ev_02",
+            "stance": "supports",
+            "reason": "States the regular-language construction."
+          },
+          {
+            "evidence_id": "ev_03",
+            "stance": "supports",
+            "reason": "States the Turing-machine simulation and its assumptions."
+          }
+        ]
+      },
+      {
+        "contribution_id": "contribution_03",
+        "statement": "Time and space upper bounds yield length-dependent expressivity limits and, together with the lower bound, a polynomial-decoding characterization of P.",
+        "contribution_type": "theory",
+        "evidence_links": [
+          {
+            "evidence_id": "ev_04",
+            "stance": "supports",
+            "reason": "Provides the time and space simulation arguments."
+          },
+          {
+            "evidence_id": "ev_05",
+            "stance": "supports",
+            "reason": "Explains the polynomial-step characterization."
+          }
+        ]
+      }
+    ],
+    "claim_checks": [
+      {
+        "claim_id": "claim_01",
+        "claim": "Linear intermediate decoding enables recognition of all regular languages and conditionally increases expressive power over immediate answering.",
+        "support_level": "supported",
+        "reasoning": "The paper supplies an automaton simulation and explicitly conditions the separation on TC0 differing from NC1. The construction uses projected pre-norm and saturated attention; it is not an unconditional claim about ordinary trained transformers.",
+        "confidence": "medium",
+        "evidence_links": [
+          {
+            "evidence_id": "ev_02",
+            "stance": "supports",
+            "reason": "Gives the construction and decoding length."
+          },
+          {
+            "evidence_id": "ev_03",
+            "stance": "supports",
+            "reason": "Explains the conditional separation."
+          },
+          {
+            "evidence_id": "ev_06",
+            "stance": "context",
+            "reason": "Specifies precision and architectural assumptions."
+          }
+        ]
+      },
+      {
+        "claim_id": "claim_02",
+        "claim": "Polynomial decoding recognizes exactly P for the studied transformer model.",
+        "support_level": "supported",
+        "reasoning": "The supplied text combines a polynomially bounded Turing-machine simulation with a soft-quadratic simulation upper bound. This supports the stated characterization within the formal model, without establishing practical efficiency or independently verifying the proofs.",
+        "confidence": "medium",
+        "evidence_links": [
+          {
+            "evidence_id": "ev_03",
+            "stance": "supports",
+            "reason": "States the simulation lower bound."
+          },
+          {
+            "evidence_id": "ev_04",
+            "stance": "supports",
+            "reason": "Provides the time upper-bound argument."
+          },
+          {
+            "evidence_id": "ev_05",
+            "stance": "context",
+            "reason": "States the characterization and practical computational caveat."
+          }
+        ]
+      },
+      {
+        "claim_id": "claim_03",
+        "claim": "Logarithmic intermediate decoding remains within L.",
+        "support_level": "supported",
+        "reasoning": "The space argument stores the generated tokens and reuses a log-space next-token simulation. Substitution of logarithmic decoding gives L membership. This is an upper bound, not an exact characterization or proof that logarithmic decoding adds no power.",
+        "confidence": "medium",
+        "evidence_links": [
+          {
+            "evidence_id": "ev_04",
+            "stance": "supports",
+            "reason": "Derives the space bound and its logarithmic-step consequence."
+          },
+          {
+            "evidence_id": "ev_07",
+            "stance": "context",
+            "reason": "Acknowledges that a concrete benefit from logarithmic decoding remains unidentified."
+          }
+        ]
+      }
+    ],
+    "dimensions": [
+      {
+        "dimension_id": "research_value",
+        "display_name": "Research Value & Significance",
+        "applicability": "applicable",
+        "score": 9,
+        "rating": "strong",
+        "weight": 0.2,
+        "summary": "Question: Does the work address an important, specific gap? It turns chain-of-thought length into a formal computational resource and supplies broadly useful bounds rather than isolated task constructions. Its significance is primarily theoretical; practical learnability is explicitly outside scope.",
+        "confidence": "high",
+        "uncertainty_reason": null,
+        "evidence_links": [
+          {
+            "evidence_id": "ev_01",
+            "stance": "supports",
+            "reason": "Motivates the missing general characterization."
+          },
+          {
+            "evidence_id": "ev_04",
+            "stance": "supports",
+            "reason": "Shows general resource-dependent upper bounds."
+          },
+          {
+            "evidence_id": "ev_08",
+            "stance": "context",
+            "reason": "Limits the implications for learning."
+          }
+        ]
+      },
+      {
+        "dimension_id": "soundness_evidence",
+        "display_name": "Soundness & Evidence Support",
+        "applicability": "applicable",
+        "score": 8,
+        "rating": "good",
+        "weight": 0.2,
+        "summary": "Question: Does the supplied evidence support the central claims? Constructive simulations, upper-bound arguments, and supporting retrieval lemmas provide substantial theoretical support. Assumptions and conditional separations are disclosed. Confidence remains bounded because finite-precision retrieval and tie-breaking details require specialist scrutiny; this assessment does not verify mathematical proofs.",
+        "confidence": "medium",
+        "uncertainty_reason": null,
+        "evidence_links": [
+          {
+            "evidence_id": "ev_03",
+            "stance": "supports",
+            "reason": "Presents the simulation construction."
+          },
+          {
+            "evidence_id": "ev_04",
+            "stance": "supports",
+            "reason": "Provides explicit upper-bound arguments."
+          },
+          {
+            "evidence_id": "ev_06",
+            "stance": "context",
+            "reason": "Identifies the formal assumptions."
+          },
+          {
+            "evidence_id": "ev_10",
+            "stance": "context",
+            "reason": "Shows the precision-sensitive retrieval and tie-breaking mechanism."
+          }
+        ]
+      },
+      {
+        "dimension_id": "originality_positioning",
+        "display_name": "Originality & Positioning",
+        "applicability": "applicable",
+        "score": 8,
+        "rating": "good",
+        "weight": 0.2,
+        "summary": "Question: Is the contribution meaningfully differentiated from cited work? The paper moves beyond a specific arithmetic example and distinguishes its decoder-only simulation from external-memory and encoder-decoder constructions. The layer-norm hash and decoding-budget characterization are identifiable theoretical contributions. Novelty is assessed from the paper's positioning, not an exhaustive prior-art search.",
+        "confidence": "medium",
+        "uncertainty_reason": null,
+        "evidence_links": [
+          {
+            "evidence_id": "ev_01",
+            "stance": "supports",
+            "reason": "Contrasts the general question with prior task-specific work."
+          },
+          {
+            "evidence_id": "ev_09",
+            "stance": "supports",
+            "reason": "Explains differences from earlier simulation approaches and acknowledges related hash ideas."
+          },
+          {
+            "evidence_id": "ev_03",
+            "stance": "context",
+            "reason": "Identifies both removed and retained architectural assumptions."
+          }
+        ]
+      },
+      {
+        "dimension_id": "clarity_usability",
+        "display_name": "Clarity & Usability",
+        "applicability": "applicable",
+        "score": 8,
+        "rating": "good",
+        "weight": 0.2,
+        "summary": "Question: Are the model, results, and limitations understandable and usable? The paper organizes results by decoding regime, makes lower-bound assumptions explicit, and separates expressivity from learnability. The constructions are detailed, although following the memory-retrieval mechanism requires cross-reading the main proof and appendices.",
+        "confidence": "high",
+        "uncertainty_reason": null,
+        "evidence_links": [
+          {
+            "evidence_id": "ev_05",
+            "stance": "supports",
+            "reason": "Explains linear and polynomial regimes and practical limits."
+          },
+          {
+            "evidence_id": "ev_06",
+            "stance": "supports",
+            "reason": "Clearly enumerates nonstandard assumptions."
+          },
+          {
+            "evidence_id": "ev_10",
+            "stance": "context",
+            "reason": "Documents the appendix-level retrieval details needed to follow the construction."
+          },
+          {
+            "evidence_id": "ev_08",
+            "stance": "supports",
+            "reason": "Clearly distinguishes expressivity and learnability."
+          }
+        ]
+      },
+      {
+        "dimension_id": "reproducibility_transparency",
+        "display_name": "Reproducibility & Transparency",
+        "applicability": "applicable",
+        "score": 8,
+        "rating": "good",
+        "weight": 0.2,
+        "summary": "Question: Is enough disclosed to reconstruct and inspect the theoretical results? Precision, attention, normalization, simulation steps, and auxiliary retrieval arguments are described. No code is reported in the supplied text, but empirical datasets, seeds, and training settings are not prerequisites for these theoretical claims. Translating the symbolic construction into an implementation would require additional engineering detail.",
+        "confidence": "medium",
+        "uncertainty_reason": null,
+        "evidence_links": [
+          {
+            "evidence_id": "ev_06",
+            "stance": "supports",
+            "reason": "Discloses precision and architectural requirements."
+          },
+          {
+            "evidence_id": "ev_03",
+            "stance": "supports",
+            "reason": "Describes the constructive simulation."
+          },
+          {
+            "evidence_id": "ev_10",
+            "stance": "supports",
+            "reason": "Provides auxiliary retrieval and tie-breaking arguments."
+          },
+          {
+            "evidence_id": "ev_08",
+            "stance": "context",
+            "reason": "Establishes the theoretical rather than training-based scope."
+          }
+        ]
+      }
+    ],
+    "reproducibility_checklist": [
+      {
+        "check_id": "code_availability",
+        "display_name": "Code availability",
+        "status": "not_available",
+        "detail": "No code repository or implementation artifact is reported in the supplied paper text. The central results are theoretical constructions.",
+        "evidence_links": [
+          {
+            "evidence_id": "ev_03",
+            "stance": "context",
+            "reason": "The disclosed method is a mathematical simulation construction, not an implementation artifact."
+          }
+        ]
+      },
+      {
+        "check_id": "data_availability",
+        "display_name": "Data availability",
+        "status": "not_applicable",
+        "detail": "The results concern formal language classes and computational simulations, not dataset-based evaluation.",
+        "evidence_links": [
+          {
+            "evidence_id": "ev_04",
+            "stance": "supports",
+            "reason": "The main upper-bound evidence is theoretical."
+          }
+        ]
+      },
+      {
+        "check_id": "random_seed",
+        "display_name": "Random seed",
+        "status": "not_applicable",
+        "detail": "No stochastic training or repeated-run experiment is used to support the central theoretical results.",
+        "evidence_links": [
+          {
+            "evidence_id": "ev_03",
+            "stance": "context",
+            "reason": "Uses a constructive machine simulation rather than randomized experiments."
+          }
+        ]
+      },
+      {
+        "check_id": "hyperparameters",
+        "display_name": "Hyperparameters",
+        "status": "not_applicable",
+        "detail": "Training and evaluation hyperparameters do not apply. Formal architectural and precision assumptions are separately specified.",
+        "evidence_links": [
+          {
+            "evidence_id": "ev_06",
+            "stance": "supports",
+            "reason": "States the relevant formal settings."
+          }
+        ]
+      },
+      {
+        "check_id": "hardware_environment",
+        "display_name": "Hardware and environment",
+        "status": "not_applicable",
+        "detail": "The claims rely on formal computational models, not measured execution on a particular hardware or software environment.",
+        "evidence_links": [
+          {
+            "evidence_id": "ev_04",
+            "stance": "supports",
+            "reason": "Uses Turing-machine simulation bounds rather than hardware benchmarks."
+          }
+        ]
+      },
+      {
+        "check_id": "preprocessing_details",
+        "display_name": "Preprocessing details",
+        "status": "not_applicable",
+        "detail": "There is no empirical preprocessing pipeline; the constructions operate on formal token strings.",
+        "evidence_links": [
+          {
+            "evidence_id": "ev_03",
+            "stance": "context",
+            "reason": "Specifies a formal input and generated simulation tokens."
+          }
+        ]
+      }
+    ],
+    "strengths": [
+      {
+        "finding_id": "strength_01",
+        "title": "Unified resource-sensitive characterization",
+        "detail": "The lower and upper bounds connect intermediate-generation length to standard time and space classes, providing more explanatory value than a single-task expressivity example.",
+        "importance": "major",
+        "confidence": "high",
+        "evidence_links": [
+          {
+            "evidence_id": "ev_04",
+            "stance": "supports",
+            "reason": "Derives general upper bounds."
+          },
+          {
+            "evidence_id": "ev_05",
+            "stance": "supports",
+            "reason": "Explains the resulting regime-dependent characterization."
+          }
+        ]
+      },
+      {
+        "finding_id": "strength_02",
+        "title": "Explicit scope and assumptions",
+        "detail": "The paper discloses the architectural generalizations behind its constructive results and explicitly avoids equating expressivity with learnability.",
+        "importance": "major",
+        "confidence": "high",
+        "evidence_links": [
+          {
+            "evidence_id": "ev_06",
+            "stance": "supports",
+            "reason": "Enumerates precision, attention, masking, and normalization assumptions."
+          },
+          {
+            "evidence_id": "ev_08",
+            "stance": "supports",
+            "reason": "States the learnability caveat."
+          }
+        ]
+      }
+    ],
+    "concerns": [
+      {
+        "finding_id": "concern_01",
+        "title": "Lower-bound applicability depends on an idealized architecture",
+        "detail": "The simulation results require saturated attention and projected pre-norm, with strict causal masking needed for the Turing-machine construction. They therefore do not directly establish the same capabilities for standard softmax, standard pre-norm implementations.",
+        "importance": "major",
+        "confidence": "high",
+        "evidence_links": [
+          {
+            "evidence_id": "ev_06",
+            "stance": "supports",
+            "reason": "Explicitly lists these lower-bound assumptions."
+          }
+        ]
+      },
+      {
+        "finding_id": "concern_02",
+        "title": "Practical reasoning benefits remain outside the demonstrated scope",
+        "detail": "The constructions establish existence rather than effective learning, and polynomially many forward passes may be impractical. This limits direct operational conclusions, rather than undermining the formal research objective.",
+        "importance": "major",
+        "confidence": "high",
+        "evidence_links": [
+          {
+            "evidence_id": "ev_08",
+            "stance": "supports",
+            "reason": "Disclaims a learnability implication."
+          },
+          {
+            "evidence_id": "ev_05",
+            "stance": "supports",
+            "reason": "Acknowledges the practical cost of polynomial decoding."
+          }
+        ]
+      }
+    ],
+    "unresolved_questions": [
+      {
+        "question_id": "question_01",
+        "question": "Can the constructive lower bounds be recovered using standard pre-norm and nonsaturated attention?",
+        "why_it_matters": "This would clarify how directly the formal expressivity gains transfer to common transformer architectures.",
+        "evidence_links": [
+          {
+            "evidence_id": "ev_06",
+            "stance": "context",
+            "reason": "Identifies the architectural assumptions that currently delimit the constructions."
+          }
+        ]
+      },
+      {
+        "question_id": "question_02",
+        "question": "What explicit rounding-error margins preserve the hash equality tests and rightmost-retrieval decisions throughout a log-precision implementation?",
+        "why_it_matters": "The retrieval mechanism uses exact-match reasoning and shrinking score gaps; a numerical error accounting would make implementation and specialist inspection easier.",
+        "evidence_links": [
+          {
+            "evidence_id": "ev_06",
+            "stance": "context",
+            "reason": "Defines the logarithmic precision model."
+          },
+          {
+            "evidence_id": "ev_10",
+            "stance": "context",
+            "reason": "Provides inverse-polynomial separation and tie-breaking terms."
+          }
+        ]
+      }
+    ],
+    "overall_assessment": {
+      "overall_score": 8.2,
+      "rating": "good",
+      "summary": "A valuable theoretical account of intermediate generation as a computational resource, supported by constructive simulations and complementary upper bounds. The principal qualifications are the idealized lower-bound architecture and the gap between expressivity and learnability.",
+      "reading_recommendation": "worth_deep_reading",
+      "recommendation_reason": "Especially useful for researchers studying transformer expressivity and chain-of-thought resource limits; read the architectural assumptions and retrieval appendices alongside the headline characterizations.",
+      "confidence": "medium",
+      "is_provisional": false,
+      "calculation": {
+        "method": "weighted_average",
+        "assessed_dimension_count": 5,
+        "excluded_dimension_ids": []
+      }
+    },
+    "evidence": [
+      {
+        "evidence_id": "ev_01",
+        "page_number": 1,
+        "section_id": null,
+        "section_title": null,
+        "locator_type": "text",
+        "locator_label": "arxiv_2310_07923v5_chunk_0002",
+        "evidence_mode": "paraphrase",
+        "excerpt": "The introduction contrasts task-specific chain-of-thought results with the missing general characterization of solvable problems and required intermediate steps.",
+        "location_confidence": "high"
+      },
+      {
+        "evidence_id": "ev_02",
+        "page_number": 6,
+        "section_id": null,
+        "section_title": null,
+        "locator_type": "text",
+        "locator_label": "arxiv_2310_07923v5_chunk_0015",
+        "evidence_mode": "paraphrase",
+        "excerpt": "Introduces the layer-norm hash, states scale-invariance and equality properties, and gives a regular-language construction using |x| + 1 decoding steps.",
+        "location_confidence": "high"
+      },
+      {
+        "evidence_id": "ev_03",
+        "page_number": 7,
+        "section_id": null,
+        "section_title": null,
+        "locator_type": "text",
+        "locator_label": "arxiv_2310_07923v5_chunk_0017",
+        "evidence_mode": "paraphrase",
+        "excerpt": "Explains the conditional regular-language separation and states a Turing-machine simulation using projected pre-norm and strict causal saturated attention, with additional output steps.",
+        "location_confidence": "high"
+      },
+      {
+        "evidence_id": "ev_04",
+        "page_number": 9,
+        "section_id": null,
+        "section_title": null,
+        "locator_type": "text",
+        "locator_label": "arxiv_2310_07923v5_chunk_0021",
+        "evidence_mode": "paraphrase",
+        "excerpt": "Completes the soft-quadratic time simulation and derives SPACE(t(n) + log n) by storing generated tokens and reusing a log-space transformer simulation.",
+        "location_confidence": "high"
+      },
+      {
+        "evidence_id": "ev_05",
+        "page_number": 3,
+        "section_id": null,
+        "section_title": null,
+        "locator_type": "text",
+        "locator_label": "arxiv_2310_07923v5_chunk_0007",
+        "evidence_mode": "paraphrase",
+        "excerpt": "Linear decoding lies within soft-quadratic time and linear space; polynomial decoding characterizes P, although polynomially many large-model forward passes may be impractical.",
+        "location_confidence": "high"
+      },
+      {
+        "evidence_id": "ev_06",
+        "page_number": 5,
+        "section_id": null,
+        "section_title": null,
+        "locator_type": "text",
+        "locator_label": "arxiv_2310_07923v5_chunk_0012",
+        "evidence_mode": "paraphrase",
+        "excerpt": "Defines logarithmic precision and lists saturated attention, strict causal masking, and projected pre-norm as lower-bound assumptions; explains simulation of multi-pre-norm.",
+        "location_confidence": "high"
+      },
+      {
+        "evidence_id": "ev_07",
+        "page_number": 4,
+        "section_id": null,
+        "section_title": null,
+        "locator_type": "text",
+        "locator_label": "arxiv_2310_07923v5_chunk_0008",
+        "evidence_mode": "paraphrase",
+        "excerpt": "The authors have not identified a concrete reasoning problem for which logarithmic intermediate decoding helps.",
+        "location_confidence": "high"
+      },
+      {
+        "evidence_id": "ev_08",
+        "page_number": 9,
+        "section_id": null,
+        "section_title": null,
+        "locator_type": "text",
+        "locator_label": "arxiv_2310_07923v5_chunk_0022",
+        "evidence_mode": "paraphrase",
+        "excerpt": "The paper focuses on expressive power rather than learnability and states that lower bounds do not imply transformers can learn to use intermediate steps effectively.",
+        "location_confidence": "high"
+      },
+      {
+        "evidence_id": "ev_09",
+        "page_number": 3,
+        "section_id": null,
+        "section_title": null,
+        "locator_type": "text",
+        "locator_label": "arxiv_2310_07923v5_chunk_0005",
+        "evidence_mode": "paraphrase",
+        "excerpt": "Positions the construction against external-memory and encoder-decoder simulations, and acknowledges a related earlier idea for bounded-depth Dyck languages.",
+        "location_confidence": "high"
+      },
+      {
+        "evidence_id": "ev_10",
+        "page_number": 15,
+        "section_id": null,
+        "section_title": null,
+        "locator_type": "text",
+        "locator_label": "arxiv_2310_07923v5_chunk_0039",
+        "evidence_mode": "paraphrase",
+        "excerpt": "The rightmost-retrieval argument combines layer-norm hashes with a monotone tie-breaker smaller than an inverse-polynomial mismatch gap, then retrieves the latest matching write.",
+        "location_confidence": "high"
+      }
+    ],
+    "limitations": [
+      "This is an ICLR-inspired due-diligence scorecard, not an official review or a prediction of a publication decision.",
+      "The assessment uses only the supplied paper and metadata; it does not establish global novelty or consult external community signals.",
+      "Mathematical proofs and code execution have not been independently verified. The finite-precision question is a scrutiny priority, not an established counterexample.",
+      "Theoretical existence results should not be interpreted as empirical evidence of trainability, robustness, or practical reasoning improvements."
+    ],
+    "generated_at": "2026-07-17"
+  },
+  "warnings": [],
+  "error": null,
+  "created_at": "2026-10-25T05:51:13Z",
+  "started_at": "2026-10-25T05:51:13Z",
+  "completed_at": "2026-10-25T05:52:45Z",
+  "credibility_assessment_id": "cred_0c5321d18b154340a12b88e8dc1f1c1b"
+}

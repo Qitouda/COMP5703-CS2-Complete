@@ -1,0 +1,324 @@
+"""Regression cases for evidence locations in ordinary PDF extraction output."""
+from __future__ import annotations
+
+import re
+from pathlib import Path
+
+import pytest
+
+from app.parsing.anchors import build_anchored_text, collect_anchors
+from app.parsing.generic import GenericPdfParser, PdfParseError, _heading
+
+
+class _Page:
+    def __init__(self, text: str) -> None:
+        self.text = text
+
+    def extract_text(self, *args, **kwargs) -> str:
+        return self.text
+
+
+_BODY = (
+    "We compare the initial answers with revised answers under controlled conditions. "
+    "The observed results apply to the tested models and benchmarks. "
+) * 5
+
+
+def _parse_pages(tmp_path: Path, monkeypatch, page_texts: list[str]):
+    class Reader:
+        is_encrypted = False
+        metadata = {}
+
+        def __init__(self, path: str) -> None:
+            self.pages = [_Page(text) for text in page_texts]
+
+    pdf = tmp_path / "paper.pdf"
+    pdf.write_bytes(b"%PDF-independent-parser-regression")
+    monkeypatch.setattr("app.parsing.generic.PdfReader", Reader)
+    parser = GenericPdfParser(
+        arxiv_cache_dir=tmp_path / "arxiv",
+        max_download_bytes=1024 * 1024,
+        max_pages=20,
+    )
+    return parser.parse_pdf(str(pdf), arxiv_id="2310.01798v1")
+
+
+def _block_with(doc, text: str):
+    matches = [block for block in doc.blocks if text in block.text]
+    assert len(matches) == 1, f"Expected one block containing {text!r}"
+    return matches[0]
+
+
+def test_multiline_title_and_small_caps_abstract_keep_separate_sections(tmp_path, monkeypatch):
+    abstract = (
+        "We investigate whether a model can revise its own reasoning without external feedback. "
+        "Under the tested conditions its performance can decline after self-correction."
+    )
+    doc = _parse_pages(
+        tmp_path,
+        monkeypatch,
+        [
+            "LARGE LANGUAGE MODELS CANNOT SELF-CORRECT\n"
+            "REASONING YET\n"
+            "Jie Huang and collaborators\n"
+            "ABSTRACT\n"
+            f"{abstract}\n"
+            "1 I NTRODUCTION\n"
+            "Introduction-only discussion begins here.\n"
+            f"{_BODY}",
+        ],
+    )
+
+    assert re.sub(r"\s+", " ", doc.paper.title or "").upper() == (
+        "LARGE LANGUAGE MODELS CANNOT SELF-CORRECT REASONING YET"
+    )
+    assert doc.paper.abstract is not None
+    assert abstract in doc.paper.abstract
+    assert "Introduction-only discussion" not in doc.paper.abstract
+
+    abstract_block = _block_with(doc, abstract)
+    introduction_block = _block_with(doc, "Introduction-only discussion begins here.")
+    assert abstract_block.section_title.casefold() == "abstract"
+    assert introduction_block.section_title.casefold() == "introduction"
+    assert abstract_block.section_id != introduction_block.section_id
+    assert abstract_block.pages == introduction_block.pages == {1}
+
+
+def _table_case(tmp_path, monkeypatch):
+    return _parse_pages(
+        tmp_path,
+        monkeypatch,
+        [
+            "SELF-CORRECTION STUDY\nABSTRACT\n" + _BODY + "\n1 INTRODUCTION\n" + _BODY,
+            "2 BACKGROUND\n" + _BODY,
+            "3.1 EXPERIMENTAL SETUP\n"
+            "GPT-4 was accessed on 2023/08/29. We randomly sample 200 GSM8K questions.\n"
+            + _BODY,
+            "3.2 I NTRINSIC SELF-CORRECTION\n"
+            "We remove the use of labels to determine when to stop.\n" + _BODY,
+            "Table 3: Accuracy after intrinsic self-correction.\n"
+            "# calls GSM8K CommonSenseQA HotpotQA\n"
+            "GPT-4\n"
+            "Standard Prompting 1 95.5 82.0 49.0\n"
+            "Self-Correct (round 1) 3 91.5 79.5 49.0\n"
+            "Self-Correct (round 2) 5 89.0 80.0 43.0\n"
+            "GSM8K\n"
+            "Results-only discussion concludes here.\n"
+            "3.2.1 WHY DOES THE PERFORMANCE DECREASE?\n"
+            "Analysis-only discussion begins here.\n" + _BODY,
+        ],
+    )
+
+
+def test_table_labels_do_not_become_sections_and_page_continuation_keeps_owner(tmp_path, monkeypatch):
+    doc = _table_case(tmp_path, monkeypatch)
+
+    assert not any(section.title.casefold() in {"gpt-4", "gsm8k"} for section in doc.paper.sections)
+    condition = _block_with(doc, "We remove the use of labels to determine when to stop.")
+    results = _block_with(doc, "Results-only discussion concludes here.")
+    analysis = _block_with(doc, "Analysis-only discussion begins here.")
+    assert condition.section_id == results.section_id
+    assert "intrinsic" in results.section_title.casefold()
+    assert results.pages == analysis.pages == {5}
+    assert results.section_id != analysis.section_id
+    assert "decrease" in analysis.section_title.casefold()
+    assert "Analysis-only discussion" not in results.text
+
+    table = next(element for element in doc.elements if element.label == "Table 3")
+    assert table.page_number == 5
+    assert table.section_id == condition.section_id
+
+
+def test_body_references_cannot_claim_caption_pages(tmp_path, monkeypatch):
+    doc = _parse_pages(
+        tmp_path,
+        monkeypatch,
+        [
+            "EVIDENCE LOCATION STUDY\n1 INTRODUCTION\n"
+            "Table 6 is discussed below, with two examples illustrated in Figure 2.\n"
+            "We also discuss Figure 9, which has no caption in this document.\n" + _BODY,
+            "2 ADDITIONAL RESULTS\n"
+            "Table 6: Results with different feedback prompts.\n"
+            "Standard Prompting 75.9\n"
+            "Figure 2. Examples of successful and failed self-correction.\n" + _BODY,
+        ],
+    )
+
+    by_label = {element.label: element for element in doc.elements}
+    assert by_label["Table 6"].page_number == 2
+    assert by_label["Figure 2"].page_number == 2
+    assert "different feedback prompts" in (by_label["Table 6"].caption or "")
+    assert "successful and failed" in (by_label["Figure 2"].caption or "")
+    assert "Figure 9" not in by_label
+    assert doc.build_index().element_pages[("table", 6)] == 2
+    assert doc.build_index().element_pages[("figure", 2)] == 2
+
+
+def test_numeric_rows_and_conditions_remain_in_actual_page_anchors(tmp_path, monkeypatch):
+    doc = _table_case(tmp_path, monkeypatch)
+    rows = (
+        "Standard Prompting 1 95.5 82.0 49.0",
+        "Self-Correct (round 1) 3 91.5 79.5 49.0",
+        "Self-Correct (round 2) 5 89.0 80.0 43.0",
+    )
+    anchors = collect_anchors(build_anchored_text(doc))
+    for row in rows:
+        block = _block_with(doc, row)
+        assert block.pages == {5}
+        assert (5, block.chunk_id) in anchors
+    assert _block_with(doc, "200 GSM8K questions").pages == {3}
+    assert _block_with(doc, "remove the use of labels").pages == {4}
+    assert len({block.chunk_id for block in doc.blocks}) == len(doc.blocks)
+    assert doc.known_pages == {1, 2, 3, 4, 5}
+
+
+def test_unnumbered_small_caps_abstract_and_introduction_keep_their_initial_letters(tmp_path, monkeypatch):
+    abstract = (
+        "We study intrinsic self-correction using controlled reasoning benchmarks. "
+        "Performance may decline when no external feedback is available."
+    )
+    doc = _parse_pages(
+        tmp_path,
+        monkeypatch,
+        [
+            "REASONING WITH SELF-CORRECTION\nAuthors\n"
+            "A BSTRACT\n"
+            f"{abstract}\n"
+            "I NTRODUCTION\n"
+            "Introduction-only motivation appears here.\n" + _BODY,
+        ],
+    )
+
+    assert doc.paper.abstract == abstract
+    abstract_block = _block_with(doc, abstract)
+    introduction_block = _block_with(doc, "Introduction-only motivation appears here.")
+    assert abstract_block.section_title.casefold() == "abstract"
+    assert introduction_block.section_title.casefold() == "introduction"
+    assert abstract_block.section_id != introduction_block.section_id
+    assert "Introduction-only motivation" not in abstract_block.text
+    assert abstract_block.pages == introduction_block.pages == {1}
+
+
+def test_article_a_in_title_is_not_an_appendix_but_post_references_letter_heading_is(tmp_path, monkeypatch):
+    doc = _parse_pages(
+        tmp_path,
+        monkeypatch,
+        [
+            "A METHOD\nFOR ROBUST REASONING\nAuthors\n"
+            "ABSTRACT\n" + _BODY + "\n1 INTRODUCTION\n" + _BODY,
+            "REFERENCES\nReference-only entry appears here.\n"
+            "A ADDITIONAL RESULTS\nAppendix-only result appears here.\n" + _BODY,
+        ],
+    )
+
+    assert doc.paper.title == "A METHOD FOR ROBUST REASONING"
+    assert not any(section.title.casefold() in {"method", "appendix"} for section in doc.paper.sections)
+    title_block = _block_with(doc, "A METHOD\nFOR ROBUST REASONING")
+    assert title_block.section_title == "Front Matter"
+    references_block = _block_with(doc, "Reference-only entry appears here.")
+    appendix_block = _block_with(doc, "Appendix-only result appears here.")
+    assert references_block.section_title.casefold() == "references"
+    assert appendix_block.section_title.casefold() == "additional results"
+    assert references_block.section_id != appendix_block.section_id
+    assert references_block.pages == appendix_block.pages == {2}
+
+
+def test_mixed_case_title_wraps_but_author_line_does_not():
+    from collections import Counter
+
+    from app.parsing.generic import _title_from_first_page
+
+    body = Counter({"network": 12, "transformer": 9, "matt": 5, "macdermott": 4})
+    assert _title_from_first_page(
+        ["Mixture of Noise for", "Pre-Trained Model-Based Class-Incremental Learning", "Kai Jiang1,2, Zhengyan Shi2"],
+        frequencies=body,
+    ) == "Mixture of Noise for Pre-Trained Model-Based Class-Incremental Learning"
+    assert _title_from_first_page(
+        ["On the Role of Hidden States of Modern Hopfield", "Network in Transformer", "Tsubasa Masumura∗"],
+        frequencies=body,
+    ) == "On the Role of Hidden States of Modern Hopfield Network in Transformer"
+    assert _title_from_first_page(["Measuring Goal-Directedness", "Matt MacDermott", "Imperial College London"],
+                                  frequencies=Counter({"matt": 0})) == "Measuring Goal-Directedness"
+
+
+def test_title_ending_in_a_colon_keeps_its_subtitle():
+    from collections import Counter
+
+    from app.parsing.generic import _title_from_first_page
+
+    # The subtitle's words are rare in the body, but the colon says the title goes on.
+    lines = ["Instance Normalization:", "The Missing Ingredient for Fast Stylization",
+             "Dmitry Ulyanov", "Skoltech & Yandex"]
+    assert _title_from_first_page(lines, frequencies=Counter({"normalization": 40})) == (
+        "Instance Normalization: The Missing Ingredient for Fast Stylization")
+    # An author line after the colon is still not part of the title.
+    author_after_colon = ["Deep Learning:", "Jane Doe1,2, John Roe2"]
+    assert _title_from_first_page(author_after_colon, frequencies=Counter()) == "Deep Learning:"
+
+
+def test_small_caps_title_fragments_and_spaced_line_hyphen_rejoin():
+    from collections import Counter
+
+    from app.parsing.generic import _title_from_first_page
+
+    vocabulary = Counter({"validation": 27, "tion": 4, "assessing": 1, "ssessing": 1, "regularization": 3,
+                          "general": 5})
+    graphon = _title_from_first_page(["GRAPHON CROSS -VALIDA TION :A SSESSING MODELS", "ON NETWORK DATA"],
+                                     vocabulary=vocabulary)
+    assert graphon == "GRAPHON CROSS-VALIDATION: ASSESSING MODELS ON NETWORK DATA"
+    fairness = _title_from_first_page(["FAIRNESS VIA INDEPENDENCE : A G ENERAL REGULAR -", "IZATION FRAMEWORK"],
+                                      vocabulary=vocabulary)
+    assert fairness == "FAIRNESS VIA INDEPENDENCE: A GENERAL REGULARIZATION FRAMEWORK"
+
+
+def test_glued_section_numbers_restore_body_evidence_without_changing_quotes(tmp_path, monkeypatch):
+    from app.credibility.claim_model import _BODY_FORBIDDEN_ROLES
+
+    abstract = "We propose a cross-validation method for network model selection."
+    intro = "The introduction describes the network learning problem."
+    method = "The proposed method uses random imputation to select the tuning parameter."
+    result = "The measured result supports the cross-validation claim under controlled conditions."
+    doc = _parse_pages(tmp_path, monkeypatch, [
+        f"NETWORK MODEL SELECTION\nABSTRACT\n{abstract}\n1I NTRODUCTION\n{intro}\n{_BODY}",
+        f"2M ODEL SETUP\n{method}\n{_BODY}\n6.1EXPERIMENTS\n{result}\n{_BODY}",
+        f"7C ONCLUSIONS AND DISCUSSIONS\n{_BODY}\n1I NTRODUCTION\nA restarted list item stays here.",
+    ])
+    assert doc.paper.abstract == abstract
+    assert _block_with(doc, intro).section_role == "introduction"
+    assert _block_with(doc, method).section_role == "other"
+    assert _block_with(doc, result).section_role == "experiments"
+    assert _block_with(doc, result).section_role not in _BODY_FORBIDDEN_ROLES
+    assert "2M ODEL SETUP" in _block_with(doc, method).text
+    assert "6.1EXPERIMENTS" in _block_with(doc, result).text
+    assert _block_with(doc, "A restarted list item").section_role == "conclusion"
+    assert sum(section.title == "Introduction" for section in doc.paper.sections) == 1
+
+
+@pytest.mark.parametrize("line", [
+    "1Equal contribution", "1Corresponding author.", "1The generated data are available online",
+    "1EQUAL CONTRIBUTION", "1CORRESPONDING AUTHOR",
+    "2024GPU", "2024GPU MODELS", "3Dtable", "3D", "10x speedup",
+])
+def test_glued_numbers_do_not_promote_footnotes_years_or_data_to_headings(line):
+    assert _heading(line) is None
+
+
+def test_unresolved_abstract_swallowing_the_body_stops_before_scoring(tmp_path, monkeypatch):
+    with pytest.raises(PdfParseError, match="separate the abstract from the body") as caught:
+        _parse_pages(tmp_path, monkeypatch, [
+            "NETWORK MODEL SELECTION\nABSTRACT\n" + _BODY * 4,
+            "unrecognisable section boundary\n" + _BODY * 4,
+            "another unrecognisable section boundary\n" + _BODY * 4,
+        ])
+    assert caught.value.code == "PDF_PARSE_FAILED"
+
+
+def test_short_abstract_may_continue_onto_the_next_page(tmp_path, monkeypatch):
+    doc = _parse_pages(tmp_path, monkeypatch, [
+        "NETWORK MODEL SELECTION\nABSTRACT\n" + _BODY,
+        "The abstract ends here.\n1INTRODUCTION\n" + _BODY,
+        "2METHODS\n" + _BODY,
+    ])
+    assert "The abstract ends here." in doc.paper.abstract
+    assert "1INTRODUCTION" not in doc.paper.abstract
+    assert doc.parse_quality.value == "good"

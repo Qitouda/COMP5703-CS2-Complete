@@ -1,0 +1,150 @@
+> 历史记录，DeepSeek 已停用。以下保留当时的配置、结果和待办；当前操作见 README。
+
+# R2 通用 arXiv 三场景手工联调记录
+
+日期：2026-09-11  
+测试方式：前端 HTTP 页面手工提交，后端 `generic + deepseek` 真实链路  
+分支：`main`  
+代码版本：`94fa8d8`（`fix(backend): align model output with report schema`）
+
+## 测试目的
+
+本次测试覆盖第二轮通用 arXiv 流程的三个关键边界：
+
+1. Manifest 内的机器学习论文可以走通用解析路径，而不是读取固定 Benchmark 结果；
+2. Manifest 外的机器学习论文也可以下载、解析、入库并完成评分；
+3. Manifest 外的非机器学习研究论文可以完成解析和入库，但会在评分前被资格门控拦截。
+
+测试者已在前端依次提交三个 arXiv 链接，并确认页面结果符合预期。本记录随后于
+2026-09-11 16:52 AEST 从仍在运行的后端健康接口、本地 PDF 文件和 SQLite 数据库中提取
+持久化证据。未持久化的页面结果只记录测试者实际观察到的结论，不补造分数、任务 ID、
+token 或延迟数据。
+
+## 运行配置
+
+提取证据时 `/health` 返回的关键配置如下：
+
+| 项目 | 实际值 |
+|---|---|
+| Schema | `0.4` |
+| Parser provider | `generic` |
+| Parser implementation | `generic-pypdf-v1` |
+| LLM provider | `deepseek` |
+| 可用模型版本 | `deepseek-v4-flash` |
+| Rubric | `0.1-draft` |
+| Rubric SHA-256 | `8f760de5d7d492adc492fba2200e2f33dc005aec5d3e2de317d02f1a1337b868` |
+| Prompt | `analysis-v0.4` |
+| Venue | `ICLR 2027 main` |
+| Task runner | `inline` |
+
+## 三组结果
+
+| 场景 | 输入与解析结果 | 页面验收结果 | 结论 |
+|---|---|---|---|
+| Manifest 内 ML | `2307.08122v3`；解析为 18 页、35 个章节、28 个正文块、16 个元素；类别 `cs.LG`；解析质量 `good` | 正常完成并显示五维报告 | 通过。固定测试论文能够走通用解析与评分链路 |
+| Manifest 外 ML | `1706.03762`；自动解析为 `1706.03762v7`；15 页、27 个章节、16 个正文块、9 个元素；类别 `cs.CL`、`cs.LG`；解析质量 `good` | 正常完成并显示五维报告 | 通过。运行时不受 30 篇 Manifest 白名单限制 |
+| Manifest 外非 ML | `1602.03837`；自动解析为 `1602.03837v1`；16 页、4 个章节、30 个正文块、4 个元素；类别 `gr-qc`、`astro-ph.HE`；解析质量 `good` | 显示“无法得出评估结果”，未显示分数或报告 | 通过。研究论文能够正常解析，但非 ML 内容不会进入正式评分 |
+
+第三组的成功判据不是任务状态 `completed`，而是资格门控按设计返回
+`UNABLE_TO_ASSESS`、`report=null` 且不可重试。页面已呈现这一业务结果，因此该场景记为测试通过。
+
+## 持久化证据
+
+### 结构化数据库记录
+
+本次三篇论文都已写入 `backend/data/cs2.db` 的 `papers` 和 `parsed_docs` 表：
+
+| parsed_docs.id | arXiv | 标题 | 入库时间（UTC / AEST） |
+|---:|---|---|---|
+| 3 | `2307.08122v3` | Tangent Transformers for Composition, Privacy and Removal | 06:45:32 / 16:45:32 |
+| 4 | `1706.03762v7` | Attention Is All You Need | 06:47:15 / 16:47:15 |
+| 5 | `1602.03837v1` | Observation of Gravitational Waves from a Binary Black Hole Merger | 06:48:12 / 16:48:12 |
+
+`2307.08122v3` 在本次测试前已经解析过两次，因此 `parsed_docs` 中还存在 ID 1 和 2。
+当前实现会追加不可变解析快照，不会用新解析记录覆盖旧记录。
+
+### 原始 PDF 与完整性哈希
+
+| arXiv | 本地文件 | 字节数 | SHA-256 |
+|---|---|---:|---|
+| `2307.08122v3` | `data/arxiv/2307.08122v3.pdf` | 521,250 | `5bca1492f804f7ba440d4b5ff5bbc9d5f45afe5d4f184bd0904cdf46b8471d6f` |
+| `1706.03762v7` | `data/arxiv/1706.03762.pdf` | 2,215,244 | `bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697` |
+| `1602.03837v1` | `data/arxiv/1602.03837.pdf` | 935,476 | `e5e864c23d015b69be17e5b5d51b5b462d2829353a867513414b6728f54589c4` |
+
+数据库中的 `source_sha256` 与磁盘文件重新计算的 SHA-256 完全一致。
+
+## 当前哪些记录会保存
+
+当前实现只完成了部分持久化：
+
+- 会保存下载的 arXiv PDF；
+- 会保存论文元数据、解析质量、章节、正文块、元素和来源哈希；
+- 同一论文重复解析会在 `parsed_docs` 中留下多条快照；
+- 后端不重启时，任务状态、资格门控结论和最终报告仍可通过 assessment ID 查询。
+
+以下结果目前不会持久化到 SQLite：
+
+- assessment ID、最终状态和错误详情；
+- 资格门控的模型、结论、原因码、token 和延迟；
+- 正式评分模型运行与 repair 记录；
+- 五维分数和最终报告 JSON；
+- 原始模型输出。
+
+证据提取时相关表的实际行数为：
+
+| 表 | 行数 |
+|---|---:|
+| `assessments` | 0 |
+| `runs` | 0 |
+| `reports` | 0 |
+| `dimension_scores` | 0 |
+
+`app/tracking/run_log.py` 当前只将 `RunRecord` 写到后端标准日志，并带有“后续接数据库”的
+TODO。因此后端进程一旦重启，内存里的任务快照和终端日志将无法通过 Assessment API 恢复；
+已下载 PDF 和 `papers/parsed_docs` 结构化快照不受影响。
+
+这也意味着，本次可以由持久化证据独立复核“获取、版本解析和结构化入库”，但不能在后端
+重启后独立复核两篇 ML 论文的具体评分、第三篇门控的确切 reason code、模型 token 消耗和
+延迟。本记录没有把这一缺口误写成已保存能力。
+
+## 复查命令
+
+在 `backend` 目录运行：
+
+```bash
+sqlite3 -header -column data/cs2.db '
+SELECT d.id,
+       p.arxiv_id,
+       p.title,
+       d.parser,
+       d.parse_quality,
+       json_extract(d.content, "$.paper.page_count") AS pages,
+       json_array_length(json_extract(d.content, "$.paper.sections")) AS sections,
+       json_array_length(json_extract(d.content, "$.blocks")) AS blocks,
+       json_array_length(json_extract(d.content, "$.elements")) AS elements,
+       json_extract(d.content, "$.source_categories") AS categories,
+       d.created_at
+FROM parsed_docs d
+JOIN papers p ON p.id = d.paper_id
+WHERE d.id IN (3, 4, 5)
+ORDER BY d.id;'
+```
+
+检查当前评分相关持久化情况：
+
+```bash
+sqlite3 -header -column data/cs2.db '
+SELECT "assessments" AS table_name, count(*) AS rows FROM assessments
+UNION ALL SELECT "runs", count(*) FROM runs
+UNION ALL SELECT "reports", count(*) FROM reports
+UNION ALL SELECT "dimension_scores", count(*) FROM dimension_scores;'
+```
+
+## 验收结论与后续项
+
+本次三场景手工联调通过，证明通用 arXiv 获取、实际版本识别、PDF 解析、结构化入库以及
+ML 相关性门控已按预期串联。30 篇数据集目前只承担回归作用，不是运行时白名单。
+
+下一项应补齐 assessment、eligibility run、analysis run、dimension scores 和最终 report 的
+数据库写入，并增加任务重启恢复。完成后，再执行相同三场景测试，报告即可自动包含任务 ID、
+门控 reason code、模型版本、token、延迟、repair 次数、五维分数和最终报告快照。
