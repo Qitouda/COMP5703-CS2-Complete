@@ -94,6 +94,11 @@ npm run assistant
 它会读取 `../backend/.env` 里的 `OPENAI_*`（如果存在）。也可以用 `ASSISTANT_API_KEY` / `ASSISTANT_BASE_URL` /
 `ASSISTANT_MODEL` / `ASSISTANT_PORT` 单独配置。开发时 Vite 把 `/assistant` 代理到这个端口。服务没启动时，对话窗会提示暂不可用，其他功能不受影响。
 
+## 容器运行
+
+容器运行时，设置 `ASSISTANT_HOST=0.0.0.0`，让同一 Docker 网络中的前端代理能够访问助手；本地启动默认仍只监听 `127.0.0.1`。
+`ASSISTANT_FEEDBACK_FILE` 可指定反馈记录的完整文件路径。`Dockerfile.assistant` 将其设为 `/app/data/feedback.jsonl`，交付环境把持久卷挂到 `/app/data`，保存反馈时该目录需要可写。
+
 ## 边界
 
 - 每个地址 5 分钟内最多问 20 次。

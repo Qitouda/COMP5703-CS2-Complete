@@ -1,0 +1,29 @@
+FROM python:3.11-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+WORKDIR /opt/papertrace/backend
+
+# Root build context preserves the sibling backend/data layout used by the app.
+# Credentials, databases and installed host dependencies are excluded by .dockerignore.
+COPY backend/pyproject.toml ./
+COPY backend/requirements.docker.lock ./
+COPY backend/app ./app
+COPY backend/config ./config
+COPY backend/scripts ./scripts
+RUN python -m pip install --no-cache-dir -c requirements.docker.lock .
+
+COPY data/data /opt/papertrace/data/data
+
+RUN groupadd --gid 10001 papertrace \
+    && useradd --uid 10001 --gid papertrace --no-create-home papertrace \
+    && mkdir -p data/uploads data/arxiv data/crossref data/credibility-artifacts data/.relay-capacity \
+    && chown -R papertrace:papertrace data
+
+USER papertrace
+EXPOSE 8000
+
+# Uses existing network guard and relay-capacity control; exactly one API process.
+CMD ["python", "scripts/serve_local.py", "--host", "0.0.0.0", "--port", "8000"]

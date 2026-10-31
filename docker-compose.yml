@@ -1,0 +1,102 @@
+name: papertrace
+
+# Client handover stack: one backend process and durable SQLite/evidence storage.
+# The older backend/docker-compose.yml remains an optional development stack.
+services:
+  backend:
+    image: papertrace-backend:${PAPERTRACE_IMAGE_TAG:-20261031}
+    build:
+      context: .
+      dockerfile: backend/Dockerfile.handover
+    init: true
+    restart: unless-stopped
+    stop_grace_period: 45s
+    env_file:
+      - path: ${PAPERTRACE_ENV_FILE:-.env}
+        required: false
+    environment:
+      APP_ENV: production
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+      LLM_PROVIDER: ${LLM_PROVIDER:-openai}
+      PARSER_PROVIDER: ${PARSER_PROVIDER:-generic}
+      DATABASE_URL: sqlite:////opt/papertrace/backend/data/cs2.db
+      TASK_RUNNER: inline
+      CREDIBILITY_WORKERS: "1"
+      CREDIBILITY_PARSE_SOURCE: live
+      UPLOAD_DIR: /opt/papertrace/backend/data/uploads
+      ARXIV_CACHE_DIR: /opt/papertrace/backend/data/arxiv
+      CROSSREF_STATE_PATH: /opt/papertrace/backend/data/crossref/state.sqlite3
+      CREDIBILITY_ARTIFACT_DIR: /opt/papertrace/backend/data/credibility-artifacts
+      COMPATIBLE_SSE_AUDIT_PATH: /opt/papertrace/backend/data/sse-usage.jsonl
+      RELAY_CAPACITY_STATE_DIR: /opt/papertrace/backend/data/.relay-capacity
+      RELAY_COOLDOWN_SECONDS: ${RELAY_COOLDOWN_SECONDS:-150}
+      LLM_TIMEOUT_SECONDS: ${LLM_TIMEOUT_SECONDS:-300}
+      LLM_MAX_RETRIES: ${LLM_MAX_RETRIES:-2}
+      BENCHMARK_PARSED_DIR: /opt/papertrace/data/data/parsed/paper_001/v3
+      BENCHMARK_SOURCE_RECORD: /opt/papertrace/data/data/source_snapshots/paper_001/source_record.json
+      RUBRIC_DIR: /opt/papertrace/backend/app/rubrics/v0.1
+    ports:
+      - "127.0.0.1:${PAPERTRACE_API_PORT:-8000}:8000"
+    volumes:
+      - runtime_data:/opt/papertrace/backend/data
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=5).read()"
+      interval: 15s
+      timeout: 6s
+      start_period: 30s
+      retries: 4
+
+  frontend:
+    image: papertrace-frontend:${PAPERTRACE_IMAGE_TAG:-20261031}
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "127.0.0.1:${PAPERTRACE_PORT:-8080}:8080"
+    healthcheck:
+      test: [CMD, wget, -q, -O, /dev/null, "http://127.0.0.1:8080/__frontend_health"]
+      interval: 15s
+      timeout: 5s
+      start_period: 10s
+      retries: 4
+
+  # Enable with: docker compose --profile assistant up -d --build
+  assistant:
+    profiles: [assistant]
+    image: papertrace-assistant:${PAPERTRACE_IMAGE_TAG:-20261031}
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.assistant
+    init: true
+    restart: unless-stopped
+    env_file:
+      - path: ${PAPERTRACE_ENV_FILE:-.env}
+        required: false
+    environment:
+      ASSISTANT_HOST: 0.0.0.0
+      ASSISTANT_PORT: "8020"
+      ASSISTANT_FEEDBACK_FILE: /app/data/feedback.jsonl
+    volumes:
+      - assistant_data:/app/data
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:8020/assistant/health').then(r => { if (!r.ok) process.exit(1); }).catch(() => process.exit(1));"
+      interval: 15s
+      timeout: 5s
+      start_period: 10s
+      retries: 4
+
+volumes:
+  runtime_data:
+  assistant_data:

@@ -6,6 +6,7 @@
 //
 // ASSISTANT_API_KEY / ASSISTANT_BASE_URL / ASSISTANT_MODEL, falling back to OPENAI_API_KEY / OPENAI_BASE_URL /
 // OPENAI_MODEL so the backend's environment file can be reused. ASSISTANT_PORT defaults to 8020.
+// ASSISTANT_HOST defaults to loopback; containers set 0.0.0.0. ASSISTANT_FEEDBACK_FILE can point to a persistent volume.
 //
 // The knowledge is guide.md, reloaded whenever it changes (no restart). See assistant/README.md for how to maintain it.
 import { createHash } from 'node:crypto'
@@ -18,9 +19,10 @@ const apiKey = env.ASSISTANT_API_KEY || env.OPENAI_API_KEY || ''
 const baseUrl = (env.ASSISTANT_BASE_URL || env.OPENAI_BASE_URL || 'https://api.openai.com/v1').replace(/\/$/, '')
 const model = env.ASSISTANT_MODEL || env.OPENAI_MODEL || 'gpt-5.6-terra'
 const port = Number(env.ASSISTANT_PORT || 8020)
+const host = env.ASSISTANT_HOST || '127.0.0.1'
 const GUIDE = new URL('./guide.md', import.meta.url)
 // Ratings of answers, one JSON line each, for whoever maintains the guide (git-ignored; see README.md).
-const FEEDBACK = new URL('./feedback.jsonl', import.meta.url)
+const FEEDBACK = env.ASSISTANT_FEEDBACK_FILE || new URL('./feedback.jsonl', import.meta.url)
 
 /** The guide and a short version stamp, so a log line or the health route says which knowledge answered. */
 function loadGuide() {
@@ -189,4 +191,4 @@ createServer((request, response) => {
     return
   }
   send(response, 404, { error: 'Not found' })
-}).listen(port, '127.0.0.1', () => console.log(`PaperTrace assistant on http://127.0.0.1:${port} (model ${model}, guide ${guide.version})`))
+}).listen(port, host, () => console.log(`PaperTrace assistant on http://${host}:${port} (model ${model}, guide ${guide.version})`))

@@ -2,6 +2,21 @@
 
 PaperTrace 的完整开发仓库，合并当前前端、后端和数据项目。三部分使用同一级目录，后端的 benchmark 路径和前端帮助助手可以直接找到相邻组件。
 
+## 客户交付与 Docker 启动
+
+客户运行入口为仓库根目录的 `docker-compose.yml`。完整操作说明见 [Client handover and operations](docs/HANDOVER.md)，应用使用说明见 [User guide](frontend/assistant/guide.md)。
+
+需要运行中的 Docker Engine 和 Docker Compose v2.24+。在仓库根目录复制 `.env.docker.example` 为 `.env`，填写自己的模型凭据，然后运行：
+
+```bash
+docker compose up -d --build
+docker compose ps
+```
+
+打开 `http://localhost:8080`。默认包含前端与后端，并将历史、上传和证据保存在 Docker 数据卷中。帮助助手可通过 `docker compose --profile assistant up -d --build` 启用。首次构建需要联网获取镜像和依赖；真实分析另需有效的模型服务配置。
+
+本次新增的根目录配置用于交付；`backend/docker-compose.yml` 保留原开发栈用途。下面的原生启动方式继续用于开发。
+
 | 目录 | 内容 | 入口 |
 | --- | --- | --- |
 | `frontend/` | React / TypeScript 页面、HTTP 接入、帮助助手和测试 | [前端说明](frontend/README.md) |
